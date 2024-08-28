@@ -10,32 +10,36 @@
 
 class Player {
 private:
-	int posX = 25, posY = 768;
+	sf::Vector2f pos;
 	int velX = 1, velY = 2;
-	sf::RectangleShape Kangaroo;
+	sf::Sprite player;
+
 public:
-	Player() {
-		Kangaroo.setSize(sf::Vector2f(50, 50));
-		Kangaroo.setFillColor(sf::Color::Blue);
-		Kangaroo.setOrigin(25, 25);
-		Kangaroo.setPosition(posX, (posY - 25));
+
+	Player(sf::Texture& playerTexture) {
+		pos.x= 5;
+		pos.y=720;
+		player.setTexture(playerTexture);
+		player.setPosition(pos);
+		player.setScale(sf::Vector2f(1.2f, 1.2f));
+
 
 	}
 	//desenha player
 	void printPlayer(sf::RenderWindow *window) {
-		window->draw(Kangaroo);
+		window->draw(player);
 	}
 	void movePlayer() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			if (posX <= 640 - (Kangaroo.getSize().x/2)) {
-				posX += velX;
-				Kangaroo.setPosition(posX, posY-25);
+			if (pos.x <= 640 - (player.getGlobalBounds().width / 2)) {
+				pos.x += velX;
+				player.setPosition(pos);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			if (posX >= 0 + (Kangaroo.getSize().x/2)) {
-				posX -= velX;
-				Kangaroo.setPosition(posX, posY-25);
+			if (pos.x >= 0 + (player.getGlobalBounds().width / 2)) {
+				pos.x -= velX;
+				player.setPosition(pos);
 			}
 		}
 

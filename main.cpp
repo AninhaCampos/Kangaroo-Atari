@@ -1,13 +1,21 @@
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 #include "Player.hpp"
 #include "Macaco.hpp"
-#include "Fezes.hpp"
+//#include "Fezes.hpp"
+
+using namespace std;
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(640, 768), "Kangaroo Atari",sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(640, 768), "Kangaroo Atari",
+			sf::Style::Close);
 	window.setFramerateLimit(60);
-	Player jogador;
+
+	sf::Texture playerTexture;
+	if (!playerTexture.loadFromFile("assets/kangaroo.png"))
+		std::cout << "Erro ao carregar a textura do player" << std::endl;
+
+	Player jogador(playerTexture);
 	Macaco monkey;
 
 	while (window.isOpen()) {
@@ -21,7 +29,9 @@ int main() {
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
 
+		monkey.moveMacaco();
 		jogador.movePlayer();
+
 		window.display();
 	}
 	return 0;

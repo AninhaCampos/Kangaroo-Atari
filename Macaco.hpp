@@ -13,23 +13,34 @@
 
 class Macaco {
 private:
-	int posX = 640, posY = 0;
-	//int velX = 1, velY = 2;
+	sf::Vector2f pos;
+	int velX = 1, velY = 2;
 	sf::RectangleShape macaco;
 public:
 	Macaco() {
+		pos.x = 615;
+		pos.y = 25;
 		macaco.setSize(sf::Vector2f(50, 50));
 		macaco.setFillColor(sf::Color::Blue);
 		macaco.setOrigin(25, 25);
-		macaco.setPosition(posX - 25,posY + 25);
+		macaco.setPosition(pos);
 	}
 	void printMacaco(sf::RenderWindow *window) {
 			window->draw(macaco);
 		}
+	void moveMacaco() {
+
+		pos.y+=velY;
+		if(pos.y > 768){
+			pos.y = 0;
+		}
+		macaco.setPosition(pos);
+
+		}
 	void JogarFezes(){
 		srand(time(NULL));
 
-		int posicaoPoop = rand() % 3;
+		/*int posicaoPoop = rand() % 3;
 
 		Fezes bosta;
 
@@ -43,7 +54,7 @@ public:
 		case 2:
 			Fezes bosta(posX-25,posY-25);
 			break;
-		}
+		}*/
 
 	}
 };
