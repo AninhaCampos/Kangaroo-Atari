@@ -7,6 +7,7 @@
 using namespace std;
 
 int main() {
+	sf::Clock frameClock;
 	sf::RenderWindow window(sf::VideoMode(640, 768), "Kangaroo Atari",
 			sf::Style::Close);
 	window.setFramerateLimit(60);
@@ -19,6 +20,8 @@ int main() {
 	Macaco monkey;
 
 	while (window.isOpen()) {
+		sf::Time frameTime = frameClock.restart();
+		float seconds = frameTime.asSeconds();
 		sf::Event event;
 		while (window.pollEvent(event))
 			if (event.type == sf::Event::Closed) {
@@ -30,7 +33,10 @@ int main() {
 		monkey.printMacaco(&window);
 
 		monkey.moveMacaco();
-		jogador.movePlayer();
+		jogador.movePlayer(seconds);
+		jogador.puloPlayer(seconds);
+		jogador.abaixarPlayer();
+		cout<<seconds;
 
 		window.display();
 	}

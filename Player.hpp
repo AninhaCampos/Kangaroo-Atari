@@ -7,21 +7,30 @@
 
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
-
+#include <iostream>
 class Player {
 private:
 	sf::Vector2f pos;
-	int velX = 1, velY = 2;
+	float velX, velY;
 	sf::Sprite player;
+	bool pulo;
+	float tempoPulo;
+	bool abaixado;
 
 public:
 
 	Player(sf::Texture& playerTexture) {
 		pos.x= 5;
-		pos.y=720;
+		pos.y=768;
 		player.setTexture(playerTexture);
 		player.setPosition(pos);
 		player.setScale(sf::Vector2f(1.2f, 1.2f));
+		player.setOrigin(12,33);
+		velX=50;
+		velY=50;
+		pulo=false;
+		tempoPulo=0.0;
+		abaixado=false;
 
 
 	}
@@ -29,21 +38,58 @@ public:
 	void printPlayer(sf::RenderWindow *window) {
 		window->draw(player);
 	}
-	void movePlayer() {
+	void movePlayer(float tempo) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 			if (pos.x <= 640 - (player.getGlobalBounds().width / 2)) {
-				pos.x += velX;
+				pos.x += velX*tempo;
 				player.setPosition(pos);
+
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			if (pos.x >= 0 + (player.getGlobalBounds().width / 2)) {
-				pos.x -= velX;
+				pos.x -= velX*tempo;
 				player.setPosition(pos);
 			}
 		}
 
 	}
+
+	void puloPlayer(float tempo){
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+			if(abaixado==false){
+				if(pulo==false){
+					pos.y-=30;
+					tempoPulo=0;
+					pulo=true;
+				}
+			}
+		}
+		tempoPulo+=tempo;
+		if(pulo==true){
+		if(tempoPulo>0.5){
+			pos.y+=30;
+			pulo=false;
+		}
+		}
+		player.setPosition(pos);
+
+	}
+
+	void abaixarPlayer(){
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+				if(pulo==false){
+					player.setScale(sf::Vector2f(1.2f, 0.6f));
+					std::cout<<"baixado";
+					abaixado=true;
+				}
+			}else{
+			std::cout<<"nao baixado";
+			player.setScale(sf::Vector2f(1.2f, 1.2f));
+			abaixado=false;
+			}
+
+		}
 
 };
 
