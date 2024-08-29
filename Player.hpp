@@ -40,16 +40,20 @@ public:
 	}
 	void movePlayer(float tempo) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			if (pos.x <= 640 - (player.getGlobalBounds().width / 2)) {
-				pos.x += velX*tempo;
-				player.setPosition(pos);
+			if(abaixado==false){
+				if (pos.x <= 640 - (player.getGlobalBounds().width / 2)) {
+					pos.x += velX*tempo;
+					player.setPosition(pos);
 
+				}
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			if (pos.x >= 0 + (player.getGlobalBounds().width / 2)) {
-				pos.x -= velX*tempo;
-				player.setPosition(pos);
+			if(abaixado==false){
+				if (pos.x >= 0 + (player.getGlobalBounds().width / 2)) {
+					pos.x -= velX*tempo;
+					player.setPosition(pos);
+				}
 			}
 		}
 
