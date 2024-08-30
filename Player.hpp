@@ -22,13 +22,13 @@ public:
 
 	Player(sf::Texture &playerTexture) {
 		pos.x = 115;
-		pos.y = 465;
+		pos.y = 468;
 		delayPulo = 0;
 		player.setTexture(playerTexture);
 		player.setPosition(pos);
 		player.setScale(sf::Vector2f(1.2f, 1.2f));
 		player.setOrigin(12, 33);
-		velX = 50;
+		velX = 80;
 		velY = 50;
 		pulo = false;
 		tempoPulo = 0.0;
@@ -42,7 +42,7 @@ public:
 	void movePlayer(float tempo) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 			if (abaixado == false) {
-				if (pos.x <= 895 - (player.getGlobalBounds().width / 2)) {
+				if (pos.x <= 898 - (player.getGlobalBounds().width / 2)) {
 					pos.x += velX * tempo;
 					player.setPosition(pos);
 
@@ -51,7 +51,7 @@ public:
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			if (abaixado == false) {
-				if (pos.x >= 107 + (player.getGlobalBounds().width / 2)) {
+				if (pos.x >= 102 + (player.getGlobalBounds().width / 2)) {
 					pos.x -= velX * tempo;
 					player.setPosition(pos);
 				}

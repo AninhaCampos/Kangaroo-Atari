@@ -7,7 +7,7 @@
 
 #ifndef MACACO_HPP_
 #define MACACO_HPP_
-#include "Fezes.hpp"
+//#include "Fezes.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -20,7 +20,7 @@ public:
 	Macaco() {
 		pos.x = 955;
 		pos.y = 7;
-		macaco.setSize(sf::Vector2f(50, 50));
+		macaco.setSize(sf::Vector2f(30, 33));
 		macaco.setFillColor(sf::Color::Blue);
 		macaco.setOrigin(25, 25);
 		macaco.setPosition(pos);
