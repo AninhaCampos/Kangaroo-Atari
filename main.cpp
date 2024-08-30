@@ -2,22 +2,32 @@
 #include <iostream>
 #include "Player.hpp"
 #include "Macaco.hpp"
+
 //#include "Fezes.hpp"
 
 using namespace std;
 
 int main() {
 	sf::Clock frameClock;
-	sf::RenderWindow window(sf::VideoMode(640, 768), "Kangaroo Atari",
+	sf::RenderWindow window(sf::VideoMode(1000, 550), "Kangaroo Atari",
 			sf::Style::Close);
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(30);
 
 	sf::Texture playerTexture;
+	sf::Texture mapaTexture;
 	if (!playerTexture.loadFromFile("assets/kangaroo.png"))
 		std::cout << "Erro ao carregar a textura do player" << std::endl;
+	if (!mapaTexture.loadFromFile("assets/mapa.png"))
+			std::cout << "Erro ao carregar a textura do mapa" << std::endl;
+
+	sf::Sprite mapa;
+	mapa.setTexture(mapaTexture);
+	mapa.setOrigin(0,0);
+	mapa.setPosition(sf::Vector2f(0,0));
 
 	Player jogador(playerTexture);
 	Macaco monkey;
+
 
 	while (window.isOpen()) {
 		sf::Time frameTime = frameClock.restart();
@@ -29,14 +39,15 @@ int main() {
 			}
 
 		window.clear(sf::Color::Black);
+		window.draw(mapa);
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
 
-		monkey.moveMacaco();
+		monkey.moveMacaco(seconds);
 		jogador.movePlayer(seconds);
 		jogador.puloPlayer(seconds);
 		jogador.abaixarPlayer();
-		cout<<seconds;
+		//cout<<seconds;
 
 		window.display();
 	}
