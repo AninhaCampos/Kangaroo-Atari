@@ -14,12 +14,12 @@
 class Macaco {
 private:
 	sf::Vector2f pos;
-	int velX = 1, velY = 2;
+	int velX = 1, velY = 50;
 	sf::RectangleShape macaco;
 public:
 	Macaco() {
-		pos.x = 615;
-		pos.y = 25;
+		pos.x = 955;
+		pos.y = 7;
 		macaco.setSize(sf::Vector2f(50, 50));
 		macaco.setFillColor(sf::Color::Blue);
 		macaco.setOrigin(25, 25);
@@ -28,10 +28,10 @@ public:
 	void printMacaco(sf::RenderWindow *window) {
 			window->draw(macaco);
 		}
-	void moveMacaco() {
+	void moveMacaco(float tempo) {
 
-		pos.y+=velY;
-		if(pos.y > 768){
+		pos.y+=velY * tempo;
+		if(pos.y > 492){
 			pos.y = 0;
 		}
 		macaco.setPosition(pos);
