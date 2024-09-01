@@ -17,6 +17,7 @@ private:
 	float tempoPulo;
 	bool abaixado;
 	float delayPulo;
+	float tempoAnimacao;
 
 public:
 
@@ -25,84 +26,100 @@ public:
 		pos.y = 468;
 		delayPulo = 0;
 		player.setTexture(playerTexture);
+		player.setTextureRect(sf::IntRect(2, 0, 100, 93));
 		player.setPosition(pos);
-		player.setScale(sf::Vector2f(1.2f, 1.2f));
-		player.setOrigin(12, 33);
+		player.setScale(sf::Vector2f(0.5f, 0.5f));
+		player.setOrigin(50, 93);
 		velX = 80;
 		velY = 50;
 		pulo = false;
 		tempoPulo = 0.0;
 		abaixado = false;
+		tempoAnimacao = 0;
 
 	}
 	//desenha player
 	void printPlayer(sf::RenderWindow *window) {
 		window->draw(player);
 	}
-	void movePlayer(float tempo) {
+	void movePlayer(float tempo, std::vector<sf::IntRect> right) {
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			tempoAnimacao += tempo;
+			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
+				player.setTextureRect(right[1]);
+			} else if (tempoAnimacao > 0.2 && tempoAnimacao < 0.3) {
+				player.setTextureRect(right[2]);
+			} else if (tempoAnimacao > 0.4){
+				player.setTextureRect(right[0]);
+				tempoAnimacao = 0;
+			}
+			//std::cout << tempoAnimacao ;
+
+
+		if (abaixado == false) {
+			if (pos.x <= 898 - (player.getGlobalBounds().width / 2)) {
+				pos.x += velX * tempo;
+				player.setPosition(pos);
+
+			}
+		}
+		}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		if (abaixado == false) {
+			if (pos.x >= 102 + (player.getGlobalBounds().width / 2)) {
+				pos.x -= velX * tempo;
+				player.setPosition(pos);
+			}
+		}
+	}
+
+}
+
+void puloPlayer(float tempo) {
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		if (delayPulo > 0.2) {
 			if (abaixado == false) {
-				if (pos.x <= 898 - (player.getGlobalBounds().width / 2)) {
-					pos.x += velX * tempo;
-					player.setPosition(pos);
-
+				if (pulo == false) {
+					pos.y -= 30;
+					tempoPulo = 0;
+					pulo = true;
 				}
 			}
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			if (abaixado == false) {
-				if (pos.x >= 102 + (player.getGlobalBounds().width / 2)) {
-					pos.x -= velX * tempo;
-					player.setPosition(pos);
-				}
-			}
+	}
+	tempoPulo += tempo;
+	delayPulo += tempo;
+	if (pulo == true) {
+		if (tempoPulo > 0.5) {
+			pos.y += 30;
+
+			pulo = false;
+			delayPulo = 0;
+
 		}
 
 	}
+	player.setPosition(pos);
 
-	void puloPlayer(float tempo) {
+}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			if (delayPulo > 0.2) {
-				if (abaixado == false) {
-					if (pulo == false) {
-						pos.y -= 30;
-						tempoPulo = 0;
-						pulo = true;
-					}
-				}
-			}
+void abaixarPlayer() {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		if (pulo == false) {
+			player.setScale(sf::Vector2f(0.5f, 0.25f));
+			//std::cout<<"baixado";
+			abaixado = true;
 		}
-		tempoPulo += tempo;
-		delayPulo += tempo;
-		if (pulo == true) {
-			if (tempoPulo > 0.5) {
-				pos.y += 30;
-
-				pulo = false;
-				delayPulo = 0;
-
-			}
-
-		}
-		player.setPosition(pos);
-
+	} else {
+		//std::cout<<"nao baixado";
+		player.setScale(sf::Vector2f(0.5f, 0.5f));
+		abaixado = false;
 	}
 
-	void abaixarPlayer() {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			if (pulo == false) {
-				player.setScale(sf::Vector2f(1.2f, 0.6f));
-				//std::cout<<"baixado";
-				abaixado = true;
-			}
-		} else {
-			//std::cout<<"nao baixado";
-			player.setScale(sf::Vector2f(1.2f, 1.2f));
-			abaixado = false;
-		}
-
-	}
+}
 
 };
 
