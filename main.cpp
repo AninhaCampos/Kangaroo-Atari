@@ -3,6 +3,7 @@
 #include <vector>
 #include "Player.hpp"
 #include "Macaco.hpp"
+#include "Escada.hpp"
 
 //#include "Fezes.hpp"
 
@@ -27,11 +28,11 @@ int main() {
 	mapa.setPosition(sf::Vector2f(0, 0));
 
 	//sf::IntRect playerAndando (2,1,100,93);
-	std::vector<sf::IntRect> right = { sf::IntRect(2, 0, 100, 93), sf::IntRect(
-			110, 103, 120, 90), sf::IntRect(104, 0, 115, 90) };
+	std::vector<sf::IntRect> right = { sf::IntRect(2, 0, 100, 93), sf::IntRect(110, 103, 120, 90), sf::IntRect(104, 0, 115, 90) };
 
 	Player jogador(playerTexture);
 	Macaco monkey;
+	Escada escada(850,469);
 
 	while (window.isOpen()) {
 		sf::Time frameTime = frameClock.restart();
@@ -46,11 +47,10 @@ int main() {
 		window.draw(mapa);
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
-
 		monkey.moveMacaco(seconds);
-		jogador.movePlayer(seconds,right);
-		jogador.puloPlayer(seconds);
-		jogador.abaixarPlayer();
+		jogador.movePlayer(seconds,right,escada.retornaHitBox());
+
+
 		//cout<<seconds;
 
 		window.display();
