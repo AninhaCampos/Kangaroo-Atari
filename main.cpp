@@ -45,6 +45,7 @@ int main() {
 
 		window.clear(sf::Color::Black);
 		window.draw(mapa);
+		//escada.printEscada(&window);
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
 		monkey.moveMacaco(seconds);

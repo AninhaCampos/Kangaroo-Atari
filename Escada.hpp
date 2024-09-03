@@ -10,7 +10,7 @@ public:
 	Escada (float x,float y) {
 		pos.x = x;
 		pos.y = y;
-		largura=51;
+		largura=20;
 		altura=133;
 		escada.setSize(sf::Vector2f(largura, altura));
 		escada.setFillColor(sf::Color::Blue);

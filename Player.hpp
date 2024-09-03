@@ -23,7 +23,7 @@ private:
 public:
 
 	Player(sf::Texture &playerTexture) {
-		pos.x = 115;
+		pos.x = 125;
 		pos.y = 468;
 		delayPulo = 0;
 		player.setTexture(playerTexture);
@@ -45,7 +45,7 @@ public:
 		window->draw(player);
 	}
 	void movePlayer(float tempo, std::vector<sf::IntRect> right,sf::FloatRect bounds) {
-
+		//subindo escada
 		if (bounds.intersects(player.getGlobalBounds())) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 				pos.y -= 30 * tempo;
@@ -53,6 +53,7 @@ public:
 				subindoEscada = true;
 
 			}
+		//descendo escada
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 							pos.y += 30 * tempo;
 							player.setPosition(pos);
@@ -76,6 +77,7 @@ public:
 					tempoAnimacao = 0;
 				}
 				//std::cout << tempoAnimacao ;
+
 
 				if (abaixado == false) {
 					if (pos.x <= 898 - (player.getGlobalBounds().width / 2)) {
