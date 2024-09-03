@@ -17,6 +17,10 @@ int main() {
 
 	sf::Texture playerTexture;
 	sf::Texture mapaTexture;
+	sf::Texture monkeyTexture;
+
+	if (!monkeyTexture.loadFromFile("assets/macaco.png"))
+		std::cout << "Erro ao carregar a textura do macaco" << std::endl;
 	if (!playerTexture.loadFromFile("assets/Kangaroo's.png"))
 		std::cout << "Erro ao carregar a textura do player" << std::endl;
 	if (!mapaTexture.loadFromFile("assets/mapa.png"))
@@ -29,10 +33,11 @@ int main() {
 
 	//sf::IntRect playerAndando (2,1,100,93);
 	std::vector<sf::IntRect> right = { sf::IntRect(2, 0, 100, 93), sf::IntRect(110, 103, 120, 90), sf::IntRect(104, 0, 115, 90) };
+	std::vector<sf::IntRect> downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(31, 0, 14, 21) };
 
 	Player jogador(playerTexture);
-	Macaco monkey;
-	Escada escada(850,469);
+	Macaco monkey(monkeyTexture, downMacaco);
+	Escada escada(850, 469);
 
 	while (window.isOpen()) {
 		sf::Time frameTime = frameClock.restart();
@@ -48,9 +53,8 @@ int main() {
 		//escada.printEscada(&window);
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
-		monkey.moveMacaco(seconds);
-		jogador.movePlayer(seconds,right,escada.retornaHitBox());
-
+		monkey.moveMacaco(seconds, downMacaco);
+		jogador.movePlayer(seconds, right, escada.retornaHitBox());
 
 		//cout<<seconds;
 
