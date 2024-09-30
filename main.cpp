@@ -6,7 +6,7 @@
 #include "Macaco.hpp"
 #include "Escada.hpp"
 //#include "Fezes.hpp"
-
+using namespace stairs;
 using namespace std;
 
 int main() {
@@ -22,7 +22,7 @@ int main() {
 	Player jogador;
 	Mapa mapa;
 	Macaco monkey;
-	Escada escada(850, 469);
+	Escada escada[3]= { Escada(850, 469), Escada(160, 469-133), Escada(850, 469-266) };
 
 	while (window.isOpen()) {
 		sf::Time frameTime = frameClock.restart();
@@ -35,11 +35,12 @@ int main() {
 
 		window.clear(sf::Color::Black);
 		mapa.printMapa(&window);
-		//escada.printEscada(&window);
+
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
 		monkey.moveMacaco(seconds);
-		jogador.movePlayer(seconds, escada.retornaHitBox());
+		jogador.movePlayer(seconds);
+		jogador.moveEscada(seconds, escada);
 
 		//cout<<seconds;
 

@@ -1,6 +1,6 @@
 #ifndef ESCADA_HPP_
 #define ESCADA_HPP_
-
+namespace stairs{
 class Escada{
 public:
 	float largura, altura;
@@ -28,9 +28,13 @@ public:
 		window->draw(escada);
 
 	}
+
+	int getAlturaEscada(){
+			return pos.y;
+		}
 };
 
-
+}
 
 
 
