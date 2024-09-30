@@ -18,25 +18,39 @@ private:
 	sf::Sprite monkey;
 	float angulo;
 	float tempoAnimacao;
+	sf::Texture monkeyTexture;
+	std::vector<sf::IntRect> downMacaco;
 
 public:
-	Macaco(sf::Texture &monkeyTexture,std::vector<sf::IntRect> downMacaco ) {
+	Macaco() {
+		loadTextureMacaco();
+		setAnimation();
+		setSprite(downMacaco);
 		pos.x = 955;
 		pos.y = 7;
 		angulo = 180.0;
 		tempoAnimacao = 0.0;
-		monkey.setTexture(monkeyTexture);
-		monkey.setTextureRect(downMacaco[0]);
-		monkey.setPosition(pos);
-		monkey.setOrigin(6.5,10.5);
-		monkey.setScale(sf::Vector2f(2.0f, 2.0f));
-		monkey.setRotation(angulo);
 
 	}
+	void loadTextureMacaco(){
+		if (!monkeyTexture.loadFromFile("assets/macaco.png"))
+			std::cout << "Erro ao carregar a textura do macaco" << std::endl;
+		}
+		void setSprite(std::vector<sf::IntRect> downMacaco){
+			monkey.setTexture(monkeyTexture);
+			monkey.setTextureRect(downMacaco[0]);
+			monkey.setPosition(pos);
+			monkey.setOrigin(6.5,10.5);
+			monkey.setScale(sf::Vector2f(2.0f, 2.0f));
+			monkey.setRotation(angulo);
+		}
+		void setAnimation(){
+			downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(31, 0, 14, 21) };
+		}
 	void printMacaco(sf::RenderWindow *window) {
 			window->draw(monkey);
 		}
-	void moveMacaco(float tempo, std::vector<sf::IntRect> downMacaco) {
+	void moveMacaco(float tempo) {
 
 		pos.y+=velY * tempo;
 		if(pos.y > 478){

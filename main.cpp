@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include "Mapa.hpp"
 #include "Player.hpp"
 #include "Macaco.hpp"
 #include "Escada.hpp"
-
 //#include "Fezes.hpp"
 
 using namespace std;
@@ -15,28 +15,13 @@ int main() {
 			sf::Style::Close);
 	//window.setFramerateLimit(30);
 
-	sf::Texture playerTexture;
-	sf::Texture mapaTexture;
-	sf::Texture monkeyTexture;
 
-	if (!monkeyTexture.loadFromFile("assets/macaco.png"))
-		std::cout << "Erro ao carregar a textura do macaco" << std::endl;
-	if (!playerTexture.loadFromFile("assets/Kangaroo's.png"))
-		std::cout << "Erro ao carregar a textura do player" << std::endl;
-	if (!mapaTexture.loadFromFile("assets/mapa.png"))
-		std::cout << "Erro ao carregar a textura do mapa" << std::endl;
+	std::vector<sf::IntRect> rising = { sf::IntRect(2, 0, 100, 93), sf::IntRect(110, 103, 120, 90) };
+	std::vector<sf::IntRect> down = { sf::IntRect(2, 0, 100, 93), sf::IntRect(110, 103, 120, 90), sf::IntRect(104, 0, 115, 90) };
 
-	sf::Sprite mapa;
-	mapa.setTexture(mapaTexture);
-	mapa.setOrigin(0, 0);
-	mapa.setPosition(sf::Vector2f(0, 0));
-
-	//sf::IntRect playerAndando (2,1,100,93);
-	std::vector<sf::IntRect> right = { sf::IntRect(2, 0, 100, 93), sf::IntRect(110, 103, 120, 90), sf::IntRect(104, 0, 115, 90) };
-	std::vector<sf::IntRect> downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(31, 0, 14, 21) };
-
-	Player jogador(playerTexture);
-	Macaco monkey(monkeyTexture, downMacaco);
+	Player jogador;
+	Mapa mapa;
+	Macaco monkey;
 	Escada escada(850, 469);
 
 	while (window.isOpen()) {
@@ -49,12 +34,12 @@ int main() {
 			}
 
 		window.clear(sf::Color::Black);
-		window.draw(mapa);
+		mapa.printMapa(&window);
 		//escada.printEscada(&window);
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
-		monkey.moveMacaco(seconds, downMacaco);
-		jogador.movePlayer(seconds, right, escada.retornaHitBox());
+		monkey.moveMacaco(seconds);
+		jogador.movePlayer(seconds, escada.retornaHitBox());
 
 		//cout<<seconds;
 
