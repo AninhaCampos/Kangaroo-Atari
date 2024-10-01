@@ -72,17 +72,19 @@ public:
 	void printPlayer(sf::RenderWindow *window) {
 		window->draw(player);
 	}
-	void moveEscada(float tempo,Escada vetorEscadas[]) {
+	void moveEscada(float tempo, Escada vetorEscadas[]) {
 		if (vetorEscadas[0].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBox().intersects(player.getGlobalBounds())) {
 			naopodePular = true;
-			if(pulo==true){
-				pos.y = pos.y+30;
-				pulo=false;
+			if (pulo == true) {
+				pos.y = pos.y + 30;
+				pulo = false;
 			}
 
-			std::cout << naopodePular;
+
 			subirEscada(tempo, vetorEscadas[0].getAlturaEscada());
-			descerEscada(tempo,vetorEscadas[0].getAlturaEscada(), vetorEscadas[1].getAlturaEscada(),vetorEscadas[2].getAlturaEscada());
+			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
+					vetorEscadas[1].getAlturaEscada(),
+					vetorEscadas[2].getAlturaEscada());
 		} else {
 			naopodePular = false;
 			subindoEscada = false;
@@ -95,8 +97,8 @@ public:
 
 			andarDireita(tempo, rightPlayer);
 			andarEsquerda(tempo, leftPlayer);
-			if(naopodePular==false){
-			pular(tempo, upPlayer, rightPlayer);
+			if (naopodePular == false) {
+				pular(tempo, upPlayer, rightPlayer);
 			}
 			abaixar(tempo, lowerPlayer, rightPlayer);
 
@@ -106,14 +108,15 @@ public:
 	//move player::
 	void andarDireita(float tempo, std::vector<sf::IntRect> right) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			tempoAnimacao += tempo;
-			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-				player.setTextureRect(right[0]);
-			} else if (tempoAnimacao > 0.3) {
-				player.setTextureRect(right[1]);
-				tempoAnimacao = 0;
+			if (pulo == false) {
+				tempoAnimacao += tempo;
+				if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
+					player.setTextureRect(right[0]);
+				} else if (tempoAnimacao > 0.3) {
+					player.setTextureRect(right[1]);
+					tempoAnimacao = 0;
+				}
 			}
-
 			if (abaixado == false) {
 				if (pos.x <= 898 - (player.getGlobalBounds().width / 2)) {
 					pos.x += velX * tempo;
@@ -126,12 +129,14 @@ public:
 	void andarEsquerda(float tempo, std::vector<sf::IntRect> left) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			tempoAnimacao += tempo;
-			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-				player.setTextureRect(left[0]);
-			} else if (tempoAnimacao > 0.3) {
-				player.setTextureRect(left[1]);
-				tempoAnimacao = 0;
+			if (pulo == false) {
+				tempoAnimacao += tempo;
+				if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
+					player.setTextureRect(left[0]);
+				} else if (tempoAnimacao > 0.3) {
+					player.setTextureRect(left[1]);
+					tempoAnimacao = 0;
+				}
 			}
 			if (abaixado == false) {
 				if (pos.x >= 102 + (player.getGlobalBounds().width / 2)) {
@@ -144,22 +149,26 @@ public:
 	void pular(float tempo, std::vector<sf::IntRect> up,
 			std::vector<sf::IntRect> right) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			tempoAnimacao += tempo;
-			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-				player.setTextureRect(up[0]);
-			} else if (tempoAnimacao > 0.3) {
-				player.setTextureRect(up[1]);
-				tempoAnimacao = 0;
-			}
+
 			if (delayPulo > 0.2) {
 				if (abaixado == false) {
 					if (pulo == false) {
 						pos.y -= 30;
 						tempoPulo = 0;
 						pulo = true;
+						tempoAnimacao = 0;
 					}
 				}
 			}
+		}
+		if(pulo==true){
+		tempoAnimacao += tempo;
+					if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
+						player.setTextureRect(up[0]);
+					} else if (tempoAnimacao > 0.3) {
+						player.setTextureRect(up[1]);
+						tempoAnimacao = 0;
+					}
 		}
 		tempoPulo += tempo;
 		delayPulo += tempo;
@@ -200,7 +209,7 @@ public:
 	void subirEscada(float tempo, int alturaEscada) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 
-			subindoEscada = false;
+			//subindoEscada = false;
 
 			pos.y -= 30 * tempo;
 			subindoEscada = true;
@@ -209,13 +218,16 @@ public:
 
 		}
 	}
-	void descerEscada(float tempo,int alturaEscada1, int alturaEscada2, int alturaEscada3) {
+	void descerEscada(float tempo, int alturaEscada1, int alturaEscada2,
+			int alturaEscada3) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 			if (subindoEscada == true) {
 				pos.y += 30 * tempo;
 			}
 			player.setPosition(pos);
-			if ((pos.y >= alturaEscada1)|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5) || (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5) ) {
+			if ((pos.y >= alturaEscada1)
+					|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5)
+					|| (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5)) {
 				subindoEscada = false;
 			} else {
 				subindoEscada = true;
