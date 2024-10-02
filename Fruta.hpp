@@ -12,7 +12,15 @@ class Fruta {
 private:
 	sf::Texture frutaTexture;
 	sf::Sprite fruta;
+	//bool coletada;
+	sf::IntRect textureRect;
+	sf::Vector2f pos;
 public:
+	Fruta(){
+		textureRect = sf::IntRect (0, 0, 0, 0);
+		pos.x = 0.0;
+		pos.y = 0.0;
+	}
 	Fruta(sf::IntRect textureRect,sf::Vector2f pos) {
 		loadTextureFruta();
 		setSprite(textureRect, pos);

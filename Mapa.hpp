@@ -7,6 +7,7 @@
 
 #ifndef MAPA_HPP_
 #define MAPA_HPP_
+#include <iostream>
 
 class Mapa {
 private:

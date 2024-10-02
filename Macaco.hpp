@@ -22,6 +22,7 @@ private:
 	std::vector<sf::IntRect> downMacaco;
 
 public:
+
 	Macaco() {
 		loadTextureMacaco();
 		setAnimation();
