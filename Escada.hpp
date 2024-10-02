@@ -6,6 +6,7 @@ private:
 	float largura, altura;
 	sf::Vector2f pos;
 	sf::RectangleShape escada;
+	sf::RectangleShape patamarEscada;
 public:
 	Escada() {
 		pos.x = 0;
@@ -24,6 +25,11 @@ public:
 		escada.setOrigin(largura / 2, altura);
 		escada.setPosition(pos);
 
+		patamarEscada.setSize(sf::Vector2f(20, 10));
+		patamarEscada.setOrigin(10,10);
+		patamarEscada.setPosition(pos.x,pos.y-altura);
+		patamarEscada.setFillColor(sf::Color::Red);
+
 	}
 
 	sf::FloatRect retornaHitBox() {
@@ -31,9 +37,14 @@ public:
 		return bounds;
 	}
 
+	sf::FloatRect retornaHitBoxPatamar(){
+		sf::FloatRect boundsPatamar = patamarEscada.getGlobalBounds();
+		return boundsPatamar;
+	}
+
 	void printEscada(sf::RenderWindow *window) {
 		window->draw(escada);
-
+		window->draw(patamarEscada);
 	}
 
 	int getAlturaEscada() {

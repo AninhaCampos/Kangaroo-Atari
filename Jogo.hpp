@@ -73,6 +73,7 @@ private:
         palavra2.printText(&window);
         pontos.printText(&window);
         vidas.printText(&window);
+        escadas[0].printEscada(&window);
 
         window.display(); //atualiza tela
     }

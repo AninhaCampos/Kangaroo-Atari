@@ -13,7 +13,7 @@ using namespace stairs;
 class Player {
 private:
 	sf::Vector2f pos;
-	float velX, velY;
+	float velX;
 	sf::Sprite player;
 	bool pulo;
 	float tempoPulo;
@@ -38,8 +38,7 @@ public:
 		pos.x = 125;
 		pos.y = 468;
 		delayPulo = 0;
-		velX = 80;
-		velY = 50;
+		velX = 200;
 		pulo = false;
 		tempoPulo = 0.0;
 		abaixado = false;
@@ -73,7 +72,18 @@ public:
 		window->draw(player);
 	}
 	void moveEscada(float tempo, Escada vetorEscadas[]) {
-		if (vetorEscadas[0].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBox().intersects(player.getGlobalBounds())) {
+		if(testaHitboxPatamar(vetorEscadas) || testaHitboxEscada(vetorEscadas)){
+					descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
+							vetorEscadas[1].getAlturaEscada(),
+							vetorEscadas[2].getAlturaEscada(),vetorEscadas);
+
+		}else {
+
+			naopodePular = false;
+			subindoEscada = false;
+		}
+
+		if (testaHitboxEscada(vetorEscadas)) {
 			naopodePular = true;
 			if (pulo == true) {
 				pos.y = pos.y + 30;
@@ -82,10 +92,12 @@ public:
 
 
 			subirEscada(tempo, vetorEscadas[0].getAlturaEscada());
+
 			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
 					vetorEscadas[1].getAlturaEscada(),
-					vetorEscadas[2].getAlturaEscada());
-		} else {
+					vetorEscadas[2].getAlturaEscada(), vetorEscadas);
+		}else {
+
 			naopodePular = false;
 			subindoEscada = false;
 		}
@@ -219,20 +231,33 @@ public:
 		}
 	}
 	void descerEscada(float tempo, int alturaEscada1, int alturaEscada2,
-			int alturaEscada3) {
+			int alturaEscada3,Escada vetorEscadas[]) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			if (subindoEscada == true) {
-				pos.y += 30 * tempo;
-			}
-			player.setPosition(pos);
-			if ((pos.y >= alturaEscada1)
-					|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5)
-					|| (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5)) {
-				subindoEscada = false;
-			} else {
-				subindoEscada = true;
-			}
+			if(testaHitboxPatamar(vetorEscadas)){
+							pos.y += 30 * tempo;
+							subindoEscada = true;
+							player.setPosition(pos);
+
+						}else if ((pos.y >= alturaEscada1)
+								|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5)
+								|| (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5)) {
+							subindoEscada = false;
+						} else {
+							pos.y += 30 * tempo;
+							subindoEscada = true;
+							player.setPosition(pos);
+
+						}
 		}
+	}
+
+	bool testaHitboxEscada(Escada vetorEscadas[]){
+		bool encostouEscada = vetorEscadas[0].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBox().intersects(player.getGlobalBounds());
+		return encostouEscada;
+	}
+	bool testaHitboxPatamar(Escada vetorEscadas[]){
+			bool encostouPatamar = vetorEscadas[0].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBoxPatamar().intersects(player.getGlobalBounds());
+			return encostouPatamar;
 	}
 };
 
