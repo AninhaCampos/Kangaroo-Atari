@@ -34,8 +34,7 @@ private:
 	Player jogador;
 	Mapa mapa;
 	Macaco monkey;
-	Fruta morango;
-	Fruta apple;
+	Fruta frutas [3];
 	Escada escadas[3];
 	sf::Music backgroundMusic;
 
@@ -48,16 +47,6 @@ private:
 		}
 	}
 
-	//em andamento
-	/*void verificarColisoes() {
-	 if (jogador.verificaColisaoComFruta(morango)) {
-	 pontos.adicionarPontos(200);
-	 }
-	 if (jogador.verificaColisaoComFruta(apple)) {
-	 pontos.adicionarPontos(200);
-	 }
-	 }*/
-
 	void atualizarJogo(float seconds) {
 		monkey.moveMacaco(seconds);
 		jogador.movePlayer(seconds);
@@ -66,12 +55,13 @@ private:
 
 	void renderizarObjetos() {
 		window.clear(sf::Color::Black); //limpa tela
-
 		mapa.printMapa(&window);
+
+		for (int i = 0; i < 3; i++) {
+				frutas[i].printFruta(&window);
+			}
 		jogador.printPlayer(&window);
 		monkey.printMacaco(&window);
-		morango.printFruta(&window);
-		apple.printFruta(&window);
 		palavra1.printText(&window);
 		palavra2.printText(&window);
 		pontos.printText(&window);
@@ -81,40 +71,41 @@ private:
 	}
 	void carregaSons() {
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
-					std::cout << "Erro ao carregar a fonte do jogo" << std::endl;
-			backgroundMusic.play();
-			backgroundMusic.setVolume(50);
-			backgroundMusic.setLoop(true);
-		}
-	public:
-		Jogo() :
-		window(sf::VideoMode(1000, 550), "Kangaroo Atari", sf::Style::Close),
-		palavra1("Pontuacao:", sf::Vector2f(800, 500)),
-		palavra2("Vidas:", sf::Vector2f(10, 500)),
-		pontos(0, sf::Vector2f(920, 500)),
-		vidas(3, sf::Vector2f(80, 500)),
-		morango(sf::IntRect(0, 32, 43, 40), sf::Vector2f(700, 120)),
-		apple(sf::IntRect(54, 30, 46, 44), sf::Vector2f(250, 250)),
-		escadas {Escada(850, 469), Escada(160, 336), Escada(850, 203)}
+			std::cout << "Erro ao carregar a fonte do jogo" << std::endl;
+		backgroundMusic.play();
+		backgroundMusic.setVolume(50);
+		backgroundMusic.setLoop(true);
+	}
+public:
+	Jogo() :
+			window(sf::VideoMode(1000, 550), "Kangaroo Atari",sf::Style::Close),
+			palavra1("Pontuacao:",sf::Vector2f(800, 500)),
+			palavra2("Vidas:",sf::Vector2f(10, 500)),
+			pontos(0, sf::Vector2f(920, 500)),
+			vidas(3, sf::Vector2f(80, 500)),
+			frutas { Fruta (sf::Vector2f(250,250)), Fruta (sf::Vector2f(700,310)), Fruta (sf::Vector2f(550,120))},
+			escadas { Escada(850, 469), Escada(160, 336), Escada(850, 203) }
 
-		{
-			carregaSons();
-			pontos.setPontosZero();
-		}
-		//loop principal do jogo
-		void loopJogo() {
-			while (window.isOpen()) {
-				sf::Time frameTime = frameClock.restart();
-				float seconds = frameTime.asSeconds();
+	{
+		carregaSons();
+		pontos.setPontosZero();
+	}
+	//loop principal do jogo
+	void loopJogo() {
+		while (window.isOpen()) {
+			sf::Time frameTime = frameClock.restart();
+			float seconds = frameTime.asSeconds();
 
-				processarEventos();
-				//verificarColisoes();
-				atualizarJogo(seconds);
-				renderizarObjetos();
-				jogador.pegaFruta(&apple,&pontos);
+			processarEventos();
+			//verificarColisoes();
+			atualizarJogo(seconds);
+			renderizarObjetos();
+			for(int i=0;i<3;i++){
+			jogador.pegaFruta(&frutas[i], &pontos);
 			}
 		}
+	}
 
-	};
+};
 
 #endif /* JOGO_HPP_ */

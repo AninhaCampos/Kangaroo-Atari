@@ -21,26 +21,26 @@ private:
 public:
 	Fruta(){
 		coletada=false;
-		textureRect = sf::IntRect (0, 0, 0, 0);
+		//textureRect = sf::IntRect (0, 0, 0, 0);
 		pos.x = 0.0;
 		pos.y = 0.0;
 	}
-	Fruta(sf::IntRect textureRect,sf::Vector2f pos) {
+	Fruta(sf::Vector2f pos) {
 		loadTextureFruta();
-		setSprite(textureRect, pos);
+		setSprite(sf::IntRect(0, 00, 44, 44), pos);
 		coletada=false;
 
 	};
 	void loadTextureFruta() {
-		if (!frutaTexture.loadFromFile("assets/Frutas.png"))
-			std::cout << "Erro ao carregar a textura do player" << std::endl;
+		if (!frutaTexture.loadFromFile("assets/frutas.png"))
+			std::cerr << "Erro ao carregar a textura do player" << std::endl;
 	}
 	void setSprite(sf::IntRect textureRect, sf::Vector2f pos) {
 		fruta.setTexture(frutaTexture);
 		fruta.setTextureRect(textureRect);
 		fruta.setPosition(pos);
 		fruta.setScale(sf::Vector2f(1, 1));
-		fruta.setOrigin(20, 20);
+		fruta.setOrigin(22, 22);
 	}
 	void printFruta(sf::RenderWindow *window){
 		if(coletada==false){
@@ -57,7 +57,7 @@ public:
 			if(coletada==false){
 			pontos->adicionarPontos();
 			coletada=true;
-			std::cout<<"foi";
+			//std::cout<<"foi";
 			}
 		}
 };
