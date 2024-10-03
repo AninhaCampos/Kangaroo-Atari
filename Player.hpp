@@ -9,7 +9,11 @@
 #define PLAYER_HPP_
 #include <iostream>
 #include "Escada.hpp"
+#include "Fruta.hpp"
+#include "Pontuacao.hpp"
 using namespace stairs;
+using namespace berry;
+using namespace points;
 class Player {
 private:
 	sf::Vector2f pos;
@@ -259,6 +263,16 @@ public:
 			bool encostouPatamar = vetorEscadas[0].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBoxPatamar().intersects(player.getGlobalBounds());
 			return encostouPatamar;
 	}
+
+	void pegaFruta(Fruta *fruta,Pontuacao *pontos){
+			if(player.getGlobalBounds().intersects(fruta->retornaHitBoxFruta())){
+				fruta->frutaColetada(pontos);
+
+
+			}else {
+
+			}
+		}
 };
 
 #endif /* PLAYER_HPP_ */

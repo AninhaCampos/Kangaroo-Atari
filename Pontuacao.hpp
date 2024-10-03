@@ -9,7 +9,7 @@
 #define PONTUACAO_HPP_
 
 #include <string>
-
+namespace points{
 class Pontuacao {
 private:
 	sf::Font fonte;
@@ -47,9 +47,13 @@ public:
 	void printText(sf::RenderWindow *window){
 		window->draw(texto);
 	}
-	/*void adicionarPontos(int *pontos){
+	void setPontosZero(){
+		pontos = 0;
+	}
+	void adicionarPontos(){
 		pontos += 200;
-	}*/
+		texto.setString(std::to_string(pontos));
+	}
 };
-
+}
 #endif /* PONTUACAO_HPP_ */

@@ -18,6 +18,7 @@
 #include "Pontuacao.hpp"
 using namespace stairs;
 using namespace std;
+using namespace berry;
 
 class Jogo {
 private:
@@ -95,8 +96,10 @@ private:
 		morango(sf::IntRect(0, 32, 43, 40), sf::Vector2f(700, 120)),
 		apple(sf::IntRect(54, 30, 46, 44), sf::Vector2f(250, 250)),
 		escadas {Escada(850, 469), Escada(160, 336), Escada(850, 203)}
+
 		{
 			carregaSons();
+			pontos.setPontosZero();
 		}
 		//loop principal do jogo
 		void loopJogo() {
@@ -108,6 +111,7 @@ private:
 				//verificarColisoes();
 				atualizarJogo(seconds);
 				renderizarObjetos();
+				jogador.pegaFruta(&apple,&pontos);
 			}
 		}
 
