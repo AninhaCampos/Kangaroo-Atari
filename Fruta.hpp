@@ -71,9 +71,10 @@ public:
 	}
 	void setSpriteFrutas(){
 
-		spriteFrutas[0] = sf::IntRect(57,0,43,43); //maca
-		spriteFrutas[1] = sf::IntRect(1,53,47,45); //uva
-		spriteFrutas[2] = sf::IntRect(56,50,42,46); //abacaxi
+		spriteFrutas.push_back(sf::IntRect(57,0,43,43));//maca
+		spriteFrutas.push_back(sf::IntRect(1,53,47,45));//uva
+		spriteFrutas.push_back(sf::IntRect(56,50,42,46));//abacaxi
+
 
 		fruta.setTextureRect(spriteFrutas[contador]);
 
