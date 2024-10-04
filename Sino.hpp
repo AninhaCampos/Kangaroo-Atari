@@ -38,7 +38,7 @@ public:
 		loadTextureSino();
 		setSprite();
 		spriteFruta=0;
-		int tempoContado=0;
+		//int tempoContado=0;
 
 	}
 	void loadTextureSino() {
@@ -70,6 +70,7 @@ public:
 		if(retornaHitBoxSino().intersects(player) && tocado==false){
 
 			for(int i=0; i<3 ; i++){
+				frutas[i].setSpriteFrutas();
 				frutas[i].resetColetada();
 
 		}

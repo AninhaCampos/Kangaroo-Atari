@@ -8,6 +8,8 @@
 #ifndef FRUTA_HPP_
 #define FRUTA_HPP_
 #include "Pontuacao.hpp"
+#include <vector>
+
 using namespace points;
 namespace berry{
 class Fruta {
@@ -18,6 +20,9 @@ private:
 	sf::IntRect textureRect;
 	sf::Vector2f pos;
 	bool coletada;
+	std::vector<sf::IntRect> spriteFrutas;
+	int contador;
+
 public:
 	Fruta(){
 		coletada=false;
@@ -29,6 +34,7 @@ public:
 		loadTextureFruta();
 		setSprite(sf::IntRect(0, 0, 44, 44), pos);
 		coletada=false;
+		contador = 0;
 
 	};
 	void loadTextureFruta() {
@@ -63,7 +69,16 @@ public:
 	void resetColetada(){
 		coletada=false;
 	}
+	void setSpriteFrutas(){
 
+		spriteFrutas[0] = sf::IntRect(57,0,43,43); //maca
+		spriteFrutas[1] = sf::IntRect(1,53,47,45); //uva
+		spriteFrutas[2] = sf::IntRect(56,50,42,46); //abacaxi
+
+		fruta.setTextureRect(spriteFrutas[contador]);
+
+		contador ++;
+	}
 };
 }
 #endif /* FRUTA_HPP_ */
