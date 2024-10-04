@@ -22,6 +22,7 @@ private:
 	bool coletada;
 	std::vector<sf::IntRect> spriteFrutas;
 	int contador;
+	int contadorPontos;
 
 public:
 	Fruta(){
@@ -29,12 +30,15 @@ public:
 		//textureRect = sf::IntRect (0, 0, 0, 0);
 		pos.x = 0.0;
 		pos.y = 0.0;
+		 contador=0;
+		 contadorPontos=0;
 	}
 	Fruta(sf::Vector2f pos) {
 		loadTextureFruta();
 		setSprite(sf::IntRect(0, 0, 44, 44), pos);
 		coletada=false;
 		contador = 0;
+		contadorPontos=0;
 
 	};
 	void loadTextureFruta() {
@@ -61,9 +65,10 @@ public:
 
 	void frutaColetada(points::Pontuacao *pontos){
 			if(coletada==false){
-			pontos->adicionarPontos();
+			pontos->adicionarPontos(contadorPontos);
 			coletada=true;
 			//std::cout<<"foi";
+			contadorPontos++;
 			}
 		}
 	void resetColetada(){

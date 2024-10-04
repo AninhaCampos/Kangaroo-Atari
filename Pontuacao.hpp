@@ -50,8 +50,8 @@ public:
 	void setPontosZero(){
 		pontos = 0;
 	}
-	void adicionarPontos(){
-		pontos += 200;
+	void adicionarPontos(int multiplicador){
+		pontos += 100 * std::pow(2,multiplicador);
 		texto.setString(std::to_string(pontos));
 	}
 };

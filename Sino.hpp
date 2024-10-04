@@ -27,7 +27,8 @@ private:
 	sf::Vector2f pos;
 	bool tocado;
 	int spriteFruta;
-	int tempoContado;
+	float tempoContado;
+	int quantidadeMaxima;
 
 public:
 	Sino() {
@@ -38,6 +39,7 @@ public:
 		loadTextureSino();
 		setSprite();
 		spriteFruta=0;
+		quantidadeMaxima=0;
 		//int tempoContado=0;
 
 	}
@@ -58,7 +60,9 @@ public:
 		sino.setOrigin(22, 22);
 	}
 	void printSino(sf::RenderWindow *window) {
+		if(quantidadeMaxima!=3){
 		window->draw(sino);
+		}
 	}
 	sf::FloatRect retornaHitBoxSino() {
 		sf::FloatRect hitboxSino = sino.getGlobalBounds();
@@ -66,8 +70,8 @@ public:
 	}
 
 	void tocouSino(sf::FloatRect player, Fruta frutas[],float tempo){
-		std::cout<<tempoContado;
-		if(retornaHitBoxSino().intersects(player) && tocado==false){
+		std::cout<<tempoContado<<";";
+		if(retornaHitBoxSino().intersects(player) && tocado==false && quantidadeMaxima!=3){
 
 			for(int i=0; i<3 ; i++){
 				frutas[i].setSpriteFrutas();
@@ -77,9 +81,11 @@ public:
 			spriteFruta ++;
 			tocado=true;
 			tempoContado=0;
+			quantidadeMaxima ++;
+
 		}
-		tempoContado += tempo;
-		if(tempoContado>=1.2){
+		tempoContado = tempo + tempoContado;
+		if(tempoContado>=3){
 			tocado=false;
 		}
 
