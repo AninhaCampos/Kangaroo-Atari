@@ -51,6 +51,7 @@ private:
 		monkey.moveMacaco(seconds);
 		jogador.movePlayer(seconds);
 		jogador.moveEscada(seconds, escadas);
+		monkey.pegaCanguru(jogador.retornaAndar());
 	}
 
 	void renderizarObjetos() {
@@ -102,6 +103,7 @@ public:
 			renderizarObjetos();
 			for(int i=0;i<3;i++){
 			jogador.pegaFruta(&frutas[i], &pontos);
+			std::cout<<jogador.retornaAndar();
 			}
 		}
 	}

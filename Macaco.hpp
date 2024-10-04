@@ -14,7 +14,8 @@
 class Macaco {
 private:
 	sf::Vector2f pos;
-	int velX = 1, velY = 80;
+	int velX = 0;
+	int velY = 80;
 	sf::Sprite monkey;
 	float angulo;
 	float tempoAnimacao;
@@ -41,7 +42,7 @@ public:
 			monkey.setTexture(monkeyTexture);
 			monkey.setTextureRect(downMacaco[0]);
 			monkey.setPosition(pos);
-			monkey.setOrigin(6.5,10.5);
+			monkey.setOrigin(6.5,21);
 			monkey.setScale(sf::Vector2f(2.0f, 2.0f));
 			monkey.setRotation(angulo);
 		}
@@ -65,6 +66,8 @@ public:
 							//monkey.setRotation(angulo);
 							tempoAnimacao = 0;
 						}
+
+		pos.x+=velX * tempo;
 		monkey.setPosition(pos);
 
 		}
@@ -87,6 +90,36 @@ public:
 			break;
 		}*/
 
+	}
+
+	void pegaCanguru(int andar){
+
+		switch(andar){
+		case 1:
+			if(pos.y>469){
+				velX= -50;
+				velY=0;
+			}
+		break;
+
+		case 2:
+			if(pos.y>336){
+				velX= -50;
+				velY=0;
+			}
+
+		break;
+
+		case 3:
+			if(pos.y>203){
+				velX= -50;
+				velY=0;
+				}
+		break;
+		default:
+			std::cout<<"tué otario";
+
+		}
 	}
 };
 

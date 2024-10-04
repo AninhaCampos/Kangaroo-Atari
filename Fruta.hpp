@@ -27,7 +27,7 @@ public:
 	}
 	Fruta(sf::Vector2f pos) {
 		loadTextureFruta();
-		setSprite(sf::IntRect(0, 00, 44, 44), pos);
+		setSprite(sf::IntRect(0, 0, 44, 44), pos);
 		coletada=false;
 
 	};

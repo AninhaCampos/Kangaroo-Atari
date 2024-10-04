@@ -42,7 +42,7 @@ public:
 		pos.x = 125;
 		pos.y = 468;
 		delayPulo = 0;
-		velX = 200;
+		velX = 500;
 		pulo = false;
 		tempoPulo = 0.0;
 		abaixado = false;
@@ -227,7 +227,7 @@ public:
 
 			//subindoEscada = false;
 
-			pos.y -= 30 * tempo;
+			pos.y -= 100 * tempo;
 			subindoEscada = true;
 
 			player.setPosition(pos);
@@ -273,6 +273,21 @@ public:
 
 			}
 		}
+
+	int retornaAndar(){
+		if(pos.y<470 && pos.y > 340){
+			return 1;
+		}else if(pos.y<340 && pos.y > 205){
+			return 2;
+		}else if( pos.y < 205){
+			return 3;
+		}else {
+			return 0;
+		}
+
+
+
+	}
 };
 
 #endif /* PLAYER_HPP_ */
