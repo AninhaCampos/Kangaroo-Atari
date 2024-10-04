@@ -37,8 +37,7 @@ private:
 	std::vector<sf::IntRect> leftPlayer;
 	std::vector<sf::IntRect> upPlayer;
 	std::vector<sf::IntRect> lowerPlayer;
-	std::vector<sf::IntRect> upStairs;
-	std::vector<sf::IntRect> downStairs;
+	std::vector<sf::IntRect> stairsPlayer;
 
 public:
 
@@ -77,10 +76,8 @@ public:
 		upPlayer = { sf::IntRect(132, 0, 26, 26), sf::IntRect(107, 0, 25, 26) };
 		lowerPlayer =
 				{ sf::IntRect(55, 0, 25, 26), sf::IntRect(80, 0, 26, 26) };
-		upStairs =
+		stairsPlayer =
 				{ sf::IntRect(162, 27, 18, 26), sf::IntRect(181, 27, 18, 26) };
-		downStairs =
-				{ sf::IntRect(0, 54, 18, 26), sf::IntRect(19, 54, 18, 26) };
 
 	}
 	//desenha player
@@ -93,7 +90,7 @@ public:
 			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
 					vetorEscadas[1].getAlturaEscada(),
 					vetorEscadas[2].getAlturaEscada(), vetorEscadas,
-					downStairs);
+					stairsPlayer);
 
 		} else {
 
@@ -108,12 +105,12 @@ public:
 				pulo = false;
 			}
 
-			subirEscada(tempo, vetorEscadas[0].getAlturaEscada(), upStairs);
+			subirEscada(tempo, vetorEscadas[0].getAlturaEscada(), stairsPlayer);
 
 			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
 					vetorEscadas[1].getAlturaEscada(),
 					vetorEscadas[2].getAlturaEscada(), vetorEscadas,
-					downStairs);
+					stairsPlayer);
 		} else {
 
 			naopodePular = false;
@@ -237,15 +234,15 @@ public:
 		}
 	}
 	void subirEscada(float tempo, int alturaEscada,
-			std::vector<sf::IntRect> upStairs) {
+			std::vector<sf::IntRect> stairsPlayer) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 
 			//subindoEscada = false;
 			tempoAnimacao += tempo;
 			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-				player.setTextureRect(upStairs[0]);
+				player.setTextureRect(stairsPlayer[0]);
 			} else if (tempoAnimacao > 0.3) {
-				player.setTextureRect(upStairs[1]);
+				player.setTextureRect(stairsPlayer[1]);
 				tempoAnimacao = 0;
 			}
 
@@ -258,13 +255,13 @@ public:
 	}
 	void descerEscada(float tempo, int alturaEscada1, int alturaEscada2,
 			int alturaEscada3, Escada vetorEscadas[],
-			std::vector<sf::IntRect> downStairs) {
+			std::vector<sf::IntRect> stairsPlayer) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 			tempoAnimacao += tempo;
 			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-				player.setTextureRect(downStairs[0]);
+				player.setTextureRect(stairsPlayer[0]);
 			} else if (tempoAnimacao > 0.3) {
-				player.setTextureRect(downStairs[1]);
+				player.setTextureRect(stairsPlayer[1]);
 				tempoAnimacao = 0;
 			}
 			if (testaHitboxPatamar(vetorEscadas)) {

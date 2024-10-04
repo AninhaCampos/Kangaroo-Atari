@@ -56,7 +56,7 @@ private:
 		monkey.moveMacaco(seconds);
 		jogador.movePlayer(seconds);
 		jogador.moveEscada(seconds, escadas);
-		monkey.pegaCanguru(jogador.retornaAndar());
+		monkey.pegaCanguru(jogador.retornaAndar(), seconds);
 		bell.tocouSino(jogador.retornaHitBoxPlayer(),frutas,seconds);
 	}
 
