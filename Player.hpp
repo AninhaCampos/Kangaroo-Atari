@@ -11,9 +11,13 @@
 #include "Escada.hpp"
 #include "Fruta.hpp"
 #include "Pontuacao.hpp"
+#include "Sino.hpp"
+
 using namespace stairs;
 using namespace berry;
 using namespace points;
+using namespace bell;
+
 class Player {
 private:
 	sf::Vector2f pos;
@@ -76,12 +80,13 @@ public:
 		window->draw(player);
 	}
 	void moveEscada(float tempo, Escada vetorEscadas[]) {
-		if(testaHitboxPatamar(vetorEscadas) || testaHitboxEscada(vetorEscadas)){
-					descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
-							vetorEscadas[1].getAlturaEscada(),
-							vetorEscadas[2].getAlturaEscada(),vetorEscadas);
+		if (testaHitboxPatamar(vetorEscadas)
+				|| testaHitboxEscada(vetorEscadas)) {
+			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
+					vetorEscadas[1].getAlturaEscada(),
+					vetorEscadas[2].getAlturaEscada(), vetorEscadas);
 
-		}else {
+		} else {
 
 			naopodePular = false;
 			subindoEscada = false;
@@ -94,13 +99,12 @@ public:
 				pulo = false;
 			}
 
-
 			subirEscada(tempo, vetorEscadas[0].getAlturaEscada());
 
 			descerEscada(tempo, vetorEscadas[0].getAlturaEscada(),
 					vetorEscadas[1].getAlturaEscada(),
 					vetorEscadas[2].getAlturaEscada(), vetorEscadas);
-		}else {
+		} else {
 
 			naopodePular = false;
 			subindoEscada = false;
@@ -177,14 +181,14 @@ public:
 				}
 			}
 		}
-		if(pulo==true){
-		tempoAnimacao += tempo;
-					if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
-						player.setTextureRect(up[0]);
-					} else if (tempoAnimacao > 0.3) {
-						player.setTextureRect(up[1]);
-						tempoAnimacao = 0;
-					}
+		if (pulo == true) {
+			tempoAnimacao += tempo;
+			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
+				player.setTextureRect(up[0]);
+			} else if (tempoAnimacao > 0.3) {
+				player.setTextureRect(up[1]);
+				tempoAnimacao = 0;
+			}
 		}
 		tempoPulo += tempo;
 		delayPulo += tempo;
@@ -235,58 +239,71 @@ public:
 		}
 	}
 	void descerEscada(float tempo, int alturaEscada1, int alturaEscada2,
-			int alturaEscada3,Escada vetorEscadas[]) {
+			int alturaEscada3, Escada vetorEscadas[]) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			if(testaHitboxPatamar(vetorEscadas)){
-							pos.y += 30 * tempo;
-							subindoEscada = true;
-							player.setPosition(pos);
+			if (testaHitboxPatamar(vetorEscadas)) {
+				pos.y += 30 * tempo;
+				subindoEscada = true;
+				player.setPosition(pos);
 
-						}else if ((pos.y >= alturaEscada1)
-								|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5)
-								|| (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5)) {
-							subindoEscada = false;
-						} else {
-							pos.y += 30 * tempo;
-							subindoEscada = true;
-							player.setPosition(pos);
-
-						}
-		}
-	}
-
-	bool testaHitboxEscada(Escada vetorEscadas[]){
-		bool encostouEscada = vetorEscadas[0].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBox().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBox().intersects(player.getGlobalBounds());
-		return encostouEscada;
-	}
-	bool testaHitboxPatamar(Escada vetorEscadas[]){
-			bool encostouPatamar = vetorEscadas[0].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[1].retornaHitBoxPatamar().intersects(player.getGlobalBounds())|| vetorEscadas[2].retornaHitBoxPatamar().intersects(player.getGlobalBounds());
-			return encostouPatamar;
-	}
-
-	void pegaFruta(Fruta *fruta,Pontuacao *pontos){
-			if(player.getGlobalBounds().intersects(fruta->retornaHitBoxFruta())){
-				fruta->frutaColetada(pontos);
-
-
-			}else {
+			} else if ((pos.y >= alturaEscada1)
+					|| (pos.y >= alturaEscada2 && pos.y <= alturaEscada2 + 5)
+					|| (pos.y >= alturaEscada3 && pos.y <= alturaEscada3 + 5)) {
+				subindoEscada = false;
+			} else {
+				pos.y += 30 * tempo;
+				subindoEscada = true;
+				player.setPosition(pos);
 
 			}
 		}
+	}
 
-	int retornaAndar(){
-		if(pos.y<470 && pos.y > 340){
+	bool testaHitboxEscada(Escada vetorEscadas[]) {
+		bool encostouEscada = vetorEscadas[0].retornaHitBox().intersects(
+				player.getGlobalBounds())
+				|| vetorEscadas[1].retornaHitBox().intersects(
+						player.getGlobalBounds())
+				|| vetorEscadas[2].retornaHitBox().intersects(
+						player.getGlobalBounds());
+		return encostouEscada;
+	}
+	bool testaHitboxPatamar(Escada vetorEscadas[]) {
+		bool encostouPatamar =
+				vetorEscadas[0].retornaHitBoxPatamar().intersects(
+						player.getGlobalBounds())
+						|| vetorEscadas[1].retornaHitBoxPatamar().intersects(
+								player.getGlobalBounds())
+						|| vetorEscadas[2].retornaHitBoxPatamar().intersects(
+								player.getGlobalBounds());
+		return encostouPatamar;
+	}
+
+	void pegaFruta(Fruta *fruta, Pontuacao *pontos) {
+		if (player.getGlobalBounds().intersects(fruta->retornaHitBoxFruta())) {
+			fruta->frutaColetada(pontos);
+
+		} else {
+
+		}
+	}
+
+	int retornaAndar() {
+		if (pos.y < 470 && pos.y > 340) {
 			return 1;
-		}else if(pos.y<340 && pos.y > 205){
+		} else if (pos.y < 340 && pos.y > 205) {
 			return 2;
-		}else if( pos.y < 205){
+		} else if (pos.y < 205) {
 			return 3;
-		}else {
+		} else {
 			return 0;
 		}
 
+	}
+	void testaHitboxSino(Sino *sino) {
+		if (player.getGlobalBounds().intersects(sino->retornaHitBoxSino())) {
 
-
+		}
 	}
 };
 

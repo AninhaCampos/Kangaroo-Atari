@@ -16,6 +16,8 @@
 #include "Escada.hpp"
 #include "Fruta.hpp"
 #include "Pontuacao.hpp"
+#include "Sino.hpp"
+
 using namespace stairs;
 using namespace std;
 using namespace berry;
@@ -33,6 +35,7 @@ private:
 	Pontuacao vidas;
 	Player jogador;
 	Mapa mapa;
+	Sino bell;
 	Macaco monkey;
 	Fruta frutas [3];
 	Escada escadas[3];
@@ -67,6 +70,7 @@ private:
 		palavra2.printText(&window);
 		pontos.printText(&window);
 		vidas.printText(&window);
+		bell.printSino(&window);
 
 		window.display(); //atualiza tela
 	}
