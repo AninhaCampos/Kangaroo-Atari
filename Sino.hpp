@@ -7,6 +7,15 @@
 
 #ifndef SINO_HPP_
 #define SINO_HPP_
+#include "Player.hpp"
+#include "Fruta.hpp"
+#include <iostream>
+#include "Escada.hpp"
+#include "Pontuacao.hpp"
+
+
+//using namespace p1;
+using namespace berry;
 namespace bell{
 class Sino {
 private:
@@ -17,6 +26,8 @@ private:
 	sf::IntRect leftSino;
 	sf::Vector2f pos;
 	bool tocado;
+	int spriteFruta;
+	int tempoContado;
 
 public:
 	Sino() {
@@ -26,6 +37,8 @@ public:
 		setAnimation();
 		loadTextureSino();
 		setSprite();
+		spriteFruta=0;
+		int tempoContado=0;
 
 	}
 	void loadTextureSino() {
@@ -51,6 +64,29 @@ public:
 		sf::FloatRect hitboxSino = sino.getGlobalBounds();
 		return hitboxSino;
 	}
+
+	void tocouSino(sf::FloatRect player, Fruta frutas[],float tempo){
+		std::cout<<tempoContado;
+		if(retornaHitBoxSino().intersects(player) && tocado==false){
+
+			for(int i=0; i<3 ; i++){
+				frutas[i].resetColetada();
+
+		}
+			spriteFruta ++;
+			tocado=true;
+			tempoContado=0;
+		}
+		tempoContado += tempo;
+		if(tempoContado>=1.2){
+			tocado=false;
+		}
+
+
+
+	}
+
+
 };
 }
 #endif /* SINO_HPP_ */

@@ -60,6 +60,10 @@ public:
 			//std::cout<<"foi";
 			}
 		}
+	void resetColetada(){
+		coletada=false;
+	}
+
 };
 }
 #endif /* FRUTA_HPP_ */

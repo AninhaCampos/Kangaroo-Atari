@@ -17,6 +17,7 @@ using namespace stairs;
 using namespace berry;
 using namespace points;
 using namespace bell;
+namespace p1{
 
 class Player {
 private:
@@ -300,11 +301,17 @@ public:
 		}
 
 	}
-	void testaHitboxSino(Sino *sino) {
-		if (player.getGlobalBounds().intersects(sino->retornaHitBoxSino())) {
 
-		}
-	}
+	sf::FloatRect retornaHitBoxPlayer() {
+					sf::FloatRect hitboxPlayer = player.getGlobalBounds();
+					return hitboxPlayer;
+				}
+	//void testaHitboxSino(Sino *sino) {
+		//if (player.getGlobalBounds().intersects(sino->retornaHitBoxSino())) {
+
+		//}
+	//}
 };
+}
 
 #endif /* PLAYER_HPP_ */

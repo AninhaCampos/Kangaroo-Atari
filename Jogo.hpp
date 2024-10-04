@@ -21,6 +21,8 @@
 using namespace stairs;
 using namespace std;
 using namespace berry;
+using namespace p1;
+using namespace bell;
 
 class Jogo {
 private:
@@ -55,6 +57,7 @@ private:
 		jogador.movePlayer(seconds);
 		jogador.moveEscada(seconds, escadas);
 		monkey.pegaCanguru(jogador.retornaAndar());
+		bell.tocouSino(jogador.retornaHitBoxPlayer(),frutas,seconds);
 	}
 
 	void renderizarObjetos() {
@@ -107,7 +110,7 @@ public:
 			renderizarObjetos();
 			for(int i=0;i<3;i++){
 			jogador.pegaFruta(&frutas[i], &pontos);
-			std::cout<<jogador.retornaAndar();
+
 			}
 		}
 	}
