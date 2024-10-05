@@ -42,6 +42,8 @@ private:
 	Fruta frutas [3];
 	Escada escadas[3];
 	sf::Music backgroundMusic;
+	sf::SoundBuffer bufferSino;
+	sf::Sound somSino;
 
 	void processarEventos() {
 		sf::Event event;
@@ -79,10 +81,11 @@ private:
 	}
 	void carregaSons() {
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
-			std::cout << "Erro ao carregar a fonte do jogo" << std::endl;
-		backgroundMusic.play();
+			std::cout << "Erro ao carregar a musica de fundo do jogo" << std::endl;
+		//backgroundMusic.play();
 		backgroundMusic.setVolume(50);
 		backgroundMusic.setLoop(true);
+
 	}
 public:
 	Jogo() :

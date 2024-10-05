@@ -9,6 +9,8 @@
 #define PONTUACAO_HPP_
 
 #include <string>
+#include <cmath>
+
 namespace points{
 class Pontuacao {
 private:

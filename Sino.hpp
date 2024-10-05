@@ -13,10 +13,9 @@
 #include "Escada.hpp"
 #include "Pontuacao.hpp"
 
-
 //using namespace p1;
 using namespace berry;
-namespace bell{
+namespace bell {
 class Sino {
 private:
 	sf::Texture sinoTexture;
@@ -25,10 +24,13 @@ private:
 	sf::IntRect normalSino;
 	sf::IntRect leftSino;
 	sf::Vector2f pos;
+	float tempoAnimacao;
 	bool tocado;
 	int spriteFruta;
 	float tempoContado;
 	int quantidadeMaxima;
+	sf::SoundBuffer bufferSino;
+	sf::Sound somSino;
 
 public:
 	Sino() {
@@ -38,8 +40,10 @@ public:
 		setAnimation();
 		loadTextureSino();
 		setSprite();
-		spriteFruta=0;
-		quantidadeMaxima=0;
+		carregaSomSino();
+		spriteFruta = 0;
+		quantidadeMaxima = 0;
+		tempoAnimacao = 0;
 		//int tempoContado=0;
 
 	}
@@ -60,8 +64,8 @@ public:
 		sino.setOrigin(22, 22);
 	}
 	void printSino(sf::RenderWindow *window) {
-		if(quantidadeMaxima!=3){
-		window->draw(sino);
+		if (quantidadeMaxima != 3) {
+			window->draw(sino);
 		}
 	}
 	sf::FloatRect retornaHitBoxSino() {
@@ -69,30 +73,61 @@ public:
 		return hitboxSino;
 	}
 
-	void tocouSino(sf::FloatRect player, Fruta frutas[],float tempo){
-		std::cout<<tempoContado<<";";
-		if(retornaHitBoxSino().intersects(player) && tocado==false && quantidadeMaxima!=3){
+	void tocouSino(sf::FloatRect player, Fruta frutas[], float tempo) {
 
-			for(int i=0; i<3 ; i++){
+		//std::cout<<tempoContado<<";";
+		if (retornaHitBoxSino().intersects(player) && tocado == false
+				&& quantidadeMaxima != 3) {
+
+			somSino.play();
+
+			for (int i = 0; i < 3; i++) {
 				frutas[i].setSpriteFrutas();
 				frutas[i].resetColetada();
 
-		}
-			spriteFruta ++;
-			tocado=true;
-			tempoContado=0;
-			quantidadeMaxima ++;
+			}
+
+			spriteFruta++;
+			tocado = true;
+			tempoContado = 0;
+			quantidadeMaxima++;
 
 		}
 		tempoContado = tempo + tempoContado;
-		if(tempoContado>=3){
-			tocado=false;
+
+		if (tempoContado < 2 && tocado == true) { //anima sino
+			animacaoSino(tempo);
+
+		} else {
+			sino.setTextureRect(normalSino);
 		}
 
-
+		if (tempoContado >= 3) {
+			tocado = false;
+		}
 
 	}
+	void animacaoSino(float tempo) {
+		tempoAnimacao += tempo;
 
+		if (tempoAnimacao > 0.1 && tempoAnimacao < 0.3) {
+			sino.setTextureRect(rightSino);
+		} else if (tempoAnimacao >= 0.3 && tempoAnimacao < 0.5) {
+			sino.setTextureRect(leftSino);
+		} else if (tempoAnimacao >= 0.5 && tempoAnimacao < 0.7) {
+			sino.setTextureRect(rightSino);
+		} else if (tempoAnimacao >= 0.7 && tempoAnimacao < 1.0) {
+			sino.setTextureRect(leftSino);
+		} else if (tempoAnimacao > 1.0) {
+			tempoAnimacao = 0;
+		}
+	}
+	void carregaSomSino() {
+		if (!bufferSino.loadFromFile("assets/Sounds/Sino.wav")) {
+			std::cout << "Erro ao carregar o som do sino" << std::endl;
+		}
+		somSino.setBuffer(bufferSino);
+	}
 
 };
 }
