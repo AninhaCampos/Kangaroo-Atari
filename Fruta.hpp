@@ -52,7 +52,7 @@ public:
 		fruta.setTexture(frutaTexture);
 		fruta.setTextureRect(textureRect);
 		fruta.setPosition(pos);
-		fruta.setScale(sf::Vector2f(1, 1));
+		fruta.setScale(sf::Vector2f(0.8, 0.8));
 		fruta.setOrigin(22, 22);
 	}
 	void printFruta(sf::RenderWindow *window){

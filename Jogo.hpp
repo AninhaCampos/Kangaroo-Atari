@@ -15,6 +15,7 @@
 #include "Macaco.hpp"
 #include "Escada.hpp"
 #include "Fruta.hpp"
+#include "MiniKangaroo.hpp"
 #include "Pontuacao.hpp"
 #include "Sino.hpp"
 
@@ -30,17 +31,20 @@ private:
 	sf::RenderWindow window;
 	sf::Clock frameClock;
 
-	// Objetos do jogo
+	// objetos do jogo
 	Pontuacao palavra1;
 	Pontuacao palavra2;
 	Pontuacao pontos;
 	Pontuacao vidas;
 	Player jogador;
+	MiniKangaroo miniKangaroo;
 	Mapa mapa;
 	Sino bell;
 	Macaco monkey;
-	Fruta frutas [3];
+	Fruta frutas[3];
 	Escada escadas[3];
+
+	//sons
 	sf::Music backgroundMusic;
 	sf::SoundBuffer bufferSino;
 	sf::Sound somSino;
@@ -57,9 +61,15 @@ private:
 	void atualizarJogo(float seconds) {
 		monkey.moveMacaco(seconds);
 		jogador.movePlayer(seconds);
+		miniKangaroo.movePlayer2(seconds);
 		jogador.moveEscada(seconds, escadas);
 		monkey.pegaCanguru(jogador.retornaAndar(), seconds);
-		bell.tocouSino(jogador.retornaHitBoxPlayer(),frutas,seconds);
+		bell.tocouSino(jogador.retornaHitBoxPlayer(), frutas, seconds);
+
+		for (int i = 0; i < 3; i++) {
+			jogador.pegaFruta(&frutas[i], &pontos);
+
+		}
 	}
 
 	void renderizarObjetos() {
@@ -67,9 +77,10 @@ private:
 		mapa.printMapa(&window);
 
 		for (int i = 0; i < 3; i++) {
-				frutas[i].printFruta(&window);
-			}
+			frutas[i].printFruta(&window);
+		}
 		jogador.printPlayer(&window);
+		miniKangaroo.printPlayer2(&window);
 		monkey.printMacaco(&window);
 		palavra1.printText(&window);
 		palavra2.printText(&window);
@@ -81,7 +92,8 @@ private:
 	}
 	void carregaSons() {
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
-			std::cout << "Erro ao carregar a musica de fundo do jogo" << std::endl;
+			std::cout << "Erro ao carregar a musica de fundo do jogo"
+					<< std::endl;
 		backgroundMusic.play();
 		backgroundMusic.setVolume(40);
 		backgroundMusic.setLoop(true);
@@ -89,13 +101,14 @@ private:
 	}
 public:
 	Jogo() :
-			window(sf::VideoMode(1000, 550), "Kangaroo Atari",sf::Style::Close),
-			palavra1("Pontuacao:",sf::Vector2f(800, 500)),
-			palavra2("Vidas:",sf::Vector2f(10, 500)),
-			pontos(0, sf::Vector2f(920, 500)),
-			vidas(3, sf::Vector2f(80, 500)),
-			frutas { Fruta (sf::Vector2f(250,250)), Fruta (sf::Vector2f(700,310)), Fruta (sf::Vector2f(550,120))},
-			escadas { Escada(850, 469), Escada(160, 336), Escada(850, 203) }
+			window(sf::VideoMode(1000, 550), "Kangaroo Atari",
+					sf::Style::Close), palavra1("Pontuacao:",
+					sf::Vector2f(800, 500)), palavra2("Vidas:",
+					sf::Vector2f(10, 500)), pontos(0, sf::Vector2f(920, 500)), vidas(
+					3, sf::Vector2f(80, 500)), frutas { Fruta(
+					sf::Vector2f(250, 250)), Fruta(sf::Vector2f(700, 310)),
+					Fruta(sf::Vector2f(550, 120)) }, escadas { Escada(850, 469),
+					Escada(160, 336), Escada(850, 203) }
 
 	{
 		carregaSons();
@@ -108,13 +121,8 @@ public:
 			float seconds = frameTime.asSeconds();
 
 			processarEventos();
-			//verificarColisoes();
 			atualizarJogo(seconds);
 			renderizarObjetos();
-			for(int i=0;i<3;i++){
-			jogador.pegaFruta(&frutas[i], &pontos);
-
-			}
 		}
 	}
 
