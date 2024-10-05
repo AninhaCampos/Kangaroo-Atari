@@ -48,7 +48,7 @@ public:
 		pos.x = 125;
 		pos.y = 468;
 		delayPulo = 0;
-		velX = 500;
+		velX = 300;
 		pulo = false;
 		tempoPulo = 0.0;
 		abaixado = false;
@@ -184,6 +184,7 @@ public:
 						tempoPulo = 0;
 						pulo = true;
 						tempoAnimacao = 0;
+
 					}
 				}
 			}
@@ -333,6 +334,17 @@ public:
 
 	//}
 	//}
+
+	void encostaMacaco(sf::FloatRect HitBoxMacaco, points::Pontuacao *vidas){
+		if(player.getGlobalBounds().intersects(HitBoxMacaco)){
+			vidas->perdeVida();
+			pos.x = 125;
+			pos.y = 468;
+			player.setPosition(pos);
+
+		}
+
+	}
 };
 }
 

@@ -113,6 +113,8 @@ public:
 	{
 		carregaSons();
 		pontos.setPontosZero();
+		vidas.setVidaMax();
+
 	}
 	//loop principal do jogo
 	void loopJogo() {
@@ -123,6 +125,9 @@ public:
 			processarEventos();
 			atualizarJogo(seconds);
 			renderizarObjetos();
+			jogador.encostaMacaco(monkey.retornaHitBoxMacaco(),&vidas);
+
+
 		}
 	}
 

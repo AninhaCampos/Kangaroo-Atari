@@ -137,6 +137,10 @@ public:
 			tempoAnimacao = 0;
 		}
 	}
+	sf::FloatRect retornaHitBoxMacaco(){
+		return monkey.getGlobalBounds();
+
+	}
 };
 
 #endif /* MACACO_HPP_ */

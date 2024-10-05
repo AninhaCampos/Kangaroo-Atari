@@ -19,12 +19,14 @@ private:
 	int pontos;
 	std::string palavra;
 	sf::Vector2f pos;
+	int vidas;
 
 public:
 	Pontuacao() { //Construtor padrao
 		pontos = 0;
 		pos.x = 0.0;
 		pos.y = 0.0;
+		vidas = 3;
 	}
 	Pontuacao(std::string palavra, sf::Vector2f pos){
 		if (!fonte.loadFromFile("assets/Fonts/AtariSmall.ttf"))
@@ -33,6 +35,7 @@ public:
 		texto.setString(palavra);
 		texto.setCharacterSize(22);
 		setPosition(pos);
+		vidas = 3;
 	};
 
 	Pontuacao(int pontos,sf::Vector2f pos){
@@ -55,6 +58,15 @@ public:
 	void adicionarPontos(int multiplicador){
 		pontos += 100 * std::pow(2,multiplicador);
 		texto.setString(std::to_string(pontos));
+	}
+
+	void setVidaMax(){
+		vidas = 3;
+	}
+
+	void perdeVida(){
+		vidas--;
+		texto.setString(std::to_string(vidas));
 	}
 };
 }
