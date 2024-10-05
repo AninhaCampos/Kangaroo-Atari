@@ -82,8 +82,8 @@ private:
 	void carregaSons() {
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
 			std::cout << "Erro ao carregar a musica de fundo do jogo" << std::endl;
-		//backgroundMusic.play();
-		backgroundMusic.setVolume(50);
+		backgroundMusic.play();
+		backgroundMusic.setVolume(40);
 		backgroundMusic.setLoop(true);
 
 	}

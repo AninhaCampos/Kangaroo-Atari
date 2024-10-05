@@ -23,6 +23,8 @@ private:
 	std::vector<sf::IntRect> spriteFrutas;
 	int contador;
 	int contadorPontos;
+	sf::SoundBuffer bufferFruta;
+	sf::Sound somFruta;
 
 public:
 	Fruta(){
@@ -35,6 +37,7 @@ public:
 	}
 	Fruta(sf::Vector2f pos) {
 		loadTextureFruta();
+		carregaSomFruta();
 		setSprite(sf::IntRect(0, 0, 44, 44), pos);
 		coletada=false;
 		contador = 0;
@@ -65,6 +68,7 @@ public:
 
 	void frutaColetada(points::Pontuacao *pontos){
 			if(coletada==false){
+			somFruta.play();
 			pontos->adicionarPontos(contadorPontos);
 			coletada=true;
 			//std::cout<<"foi";
@@ -85,6 +89,12 @@ public:
 
 		contador ++;
 	}
+	void carregaSomFruta() {
+			if (!bufferFruta.loadFromFile("assets/Sounds/SomFruta.wav")) {
+				std::cout << "Erro ao carregar o som do sino" << std::endl;
+			}
+			somFruta.setBuffer(bufferFruta);
+		}
 };
 }
 #endif /* FRUTA_HPP_ */
