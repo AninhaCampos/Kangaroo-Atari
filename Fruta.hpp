@@ -16,7 +16,6 @@ class Fruta {
 private:
 	sf::Texture frutaTexture;
 	sf::Sprite fruta;
-	//bool coletada;
 	sf::IntRect textureRect;
 	sf::Vector2f pos;
 	bool coletada;
@@ -94,6 +93,7 @@ public:
 				std::cout << "Erro ao carregar o som do sino" << std::endl;
 			}
 			somFruta.setBuffer(bufferFruta);
+			somFruta.setVolume(50.f);
 		}
 };
 }

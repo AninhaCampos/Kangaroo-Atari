@@ -8,6 +8,7 @@
 #ifndef MINIKANGAROO_HPP_
 #define MINIKANGAROO_HPP_
 
+namespace filhote{
 class MiniKangaroo {
 private:
 	sf::Vector2f pos;
@@ -83,5 +84,6 @@ public:
 		player2.setPosition(pos);
 	}
 };
+}
 
 #endif /* MINIKANGAROO_HPP_ */

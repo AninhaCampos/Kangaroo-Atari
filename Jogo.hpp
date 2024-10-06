@@ -24,12 +24,15 @@ using namespace std;
 using namespace berry;
 using namespace p1;
 using namespace bell;
-
+/*Classe principal do jogo que cria todos os objetos,
+ *  inicializa eles e chama todas as funcoes*/
 class Jogo {
 private:
 	//janela
 	sf::RenderWindow window;
 	sf::Clock frameClock;
+	bool paraJogo;
+	float delayAtualizar;
 
 	// objetos do jogo
 	Pontuacao palavra1;
@@ -46,8 +49,8 @@ private:
 
 	//sons
 	sf::Music backgroundMusic;
-	sf::SoundBuffer bufferSino;
-	sf::Sound somSino;
+	sf::SoundBuffer bufferVitoria;
+	sf::Sound somVitoria;
 
 	void processarEventos() {
 		sf::Event event;
@@ -71,7 +74,7 @@ private:
 
 		}
 	}
-
+	/* Funcao para chamar todas as funcoes de print na janela e atualziar o display*/
 	void renderizarObjetos() {
 		window.clear(sf::Color::Black); //limpa tela
 		mapa.printMapa(&window);
@@ -90,15 +93,47 @@ private:
 
 		window.display(); //atualiza tela
 	}
-	void carregaSons() {
+
+	void carregaSons() { //carrega som de fundo e som de vitoria
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
 			std::cout << "Erro ao carregar a musica de fundo do jogo"
 					<< std::endl;
 		backgroundMusic.play();
-		backgroundMusic.setVolume(40);
+		backgroundMusic.setVolume(50);
 		backgroundMusic.setLoop(true);
 
+		if (!bufferVitoria.loadFromFile("assets/Sounds/SomWin.wav"))
+			std::cout << "Erro ao carregar o som da vitoria" << std::endl;
+
+		somVitoria.setBuffer(bufferVitoria);
+		somVitoria.setVolume(80.f);
+
 	}
+
+	void Venceu() {
+		if (jogador.getPosY() <= 70.0 && paraJogo == false) {
+
+			backgroundMusic.pause();
+			sf::Texture textureWin;
+			textureWin.loadFromFile("assets/GameWin.png");
+			sf::Sprite gameWin;
+			gameWin.setTexture(textureWin);
+			gameWin.setOrigin(0, 0);
+			gameWin.setPosition(0, 0);
+			//gameWin.setScale(2, 2);
+
+
+			window.clear();
+			window.draw(gameWin);
+			window.display();
+
+			somVitoria.play();
+			paraJogo = true;
+
+		}
+
+	}
+
 public:
 	Jogo() :
 			window(sf::VideoMode(1000, 550), "Kangaroo Atari",
@@ -111,6 +146,8 @@ public:
 					Escada(160, 336), Escada(850, 203) }
 
 	{
+		paraJogo = false;
+		delayAtualizar = 0.0;
 		carregaSons();
 		pontos.setPontosZero();
 		vidas.setVidaMax();
@@ -122,11 +159,14 @@ public:
 			sf::Time frameTime = frameClock.restart();
 			float seconds = frameTime.asSeconds();
 
+			Venceu();
 			processarEventos();
-			atualizarJogo(seconds);
-			renderizarObjetos();
-			jogador.encostaMacaco(monkey.retornaHitBoxMacaco(),&vidas);
 
+			if (paraJogo == false) {
+				atualizarJogo(seconds);
+				renderizarObjetos();
+				jogador.encostaMacaco(monkey.retornaHitBoxMacaco(), &vidas);
+			}
 
 		}
 	}

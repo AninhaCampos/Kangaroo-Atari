@@ -12,32 +12,46 @@
 #include "Fruta.hpp"
 #include "Pontuacao.hpp"
 #include "Sino.hpp"
+#include "MiniKangaroo.hpp"
+
+/*namespaces para facilitar o uso de
+ * funcoes/variaveis de diferentes classes
+ * em diferentes arquivos*/
 
 using namespace stairs;
 using namespace berry;
 using namespace points;
 using namespace bell;
+using namespace filhote;
 namespace p1 {
+/*Classe para definir posicao inicial do player,
+ * textura, som, e funcoes de movimentacao do jogador*/
 
 class Player {
 private:
-	sf::Vector2f pos;
+
 	float velX;
-	sf::Sprite player;
-	bool pulo;
 	float tempoPulo;
-	bool abaixado;
 	float delayPulo;
 	float tempoAnimacao;
+
+	bool pulo;
+	bool abaixado;
 	bool subindoEscada;
 	bool verificaAbaixado;
 	bool naopodePular;
+
+
+	sf::Vector2f pos;
+	sf::Sprite player;
 	sf::Texture playerTexture;
 	std::vector<sf::IntRect> rightPlayer;
 	std::vector<sf::IntRect> leftPlayer;
 	std::vector<sf::IntRect> upPlayer;
 	std::vector<sf::IntRect> lowerPlayer;
 	std::vector<sf::IntRect> stairsPlayer;
+	sf::SoundBuffer bufferJump;
+	sf::Sound somJump;
 
 public:
 
@@ -45,6 +59,7 @@ public:
 		loadTexturePlayer();
 		setSprite();
 		setAnimation();
+		carregaSomJump();
 		pos.x = 125;
 		pos.y = 468;
 		delayPulo = 0;
@@ -56,6 +71,7 @@ public:
 		subindoEscada = false;
 		verificaAbaixado = false;
 		naopodePular = false;
+
 
 	}
 	void loadTexturePlayer() {
@@ -76,14 +92,24 @@ public:
 		upPlayer = { sf::IntRect(132, 0, 26, 26), sf::IntRect(107, 0, 25, 26) };
 		lowerPlayer =
 				{ sf::IntRect(55, 0, 25, 26), sf::IntRect(80, 0, 26, 26) };
-		stairsPlayer =
-				{ sf::IntRect(162, 27, 18, 26), sf::IntRect(181, 27, 18, 26) };
+		stairsPlayer = { sf::IntRect(162, 27, 18, 26), sf::IntRect(181, 27, 18,
+				26) };
 
 	}
 	//desenha player
 	void printPlayer(sf::RenderWindow *window) {
 		window->draw(player);
 	}
+	void carregaSomJump() {
+		if (!bufferJump.loadFromFile("assets/Sounds/SomPular.wav")) {
+			std::cout << "Erro ao carregar o som do pulo" << std::endl;
+		}
+		somJump.setBuffer(bufferJump);
+		somJump.setVolume(10.f);
+	}
+	/*funcao para verificar se o jogador esta na escada
+	 * e limitar sua movimentacao apenas em Y*/
+
 	void moveEscada(float tempo, Escada vetorEscadas[]) {
 		if (testaHitboxPatamar(vetorEscadas)
 				|| testaHitboxEscada(vetorEscadas)) {
@@ -117,8 +143,10 @@ public:
 			subindoEscada = false;
 		}
 	}
+	/*Funcao de movimentacao: verifica se o player esta ou nao na escada.
+	 * caso esteja: pode andar apenas em Y
+	 * caso nao esteja: pode andar apenas em X*/
 	void movePlayer(float tempo) {
-		//subindo escada
 
 		if (subindoEscada == false) {
 
@@ -132,7 +160,7 @@ public:
 		}
 	}
 
-	//move player::
+	//Funcoes chamadas dentro da movePlayer
 	void andarDireita(float tempo, std::vector<sf::IntRect> right) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 			if (pulo == false) {
@@ -180,6 +208,8 @@ public:
 			if (delayPulo > 0.2) {
 				if (abaixado == false) {
 					if (pulo == false) {
+						std::cout << pos.y << std::endl;
+;						somJump.play();
 						pos.y -= 30;
 						tempoPulo = 0;
 						pulo = true;
@@ -282,7 +312,7 @@ public:
 			}
 		}
 	}
-
+//Funcoes chamadas dentro da moveEscada
 	bool testaHitboxEscada(Escada vetorEscadas[]) {
 		bool encostouEscada = vetorEscadas[0].retornaHitBox().intersects(
 				player.getGlobalBounds())
@@ -303,6 +333,7 @@ public:
 		return encostouPatamar;
 	}
 
+	/*Funcao para verificar se o player encostou na fruta e adicionar os pontos*/
 	void pegaFruta(Fruta *fruta, Pontuacao *pontos) {
 		if (player.getGlobalBounds().intersects(fruta->retornaHitBoxFruta())) {
 			fruta->frutaColetada(pontos);
@@ -312,7 +343,7 @@ public:
 		}
 	}
 
-	int retornaAndar() {
+	int retornaAndar() { //Funcao para saber em que andar o player esta
 		if (pos.y < 470 && pos.y > 340) {
 			return 1;
 		} else if (pos.y < 340 && pos.y > 205) {
@@ -325,18 +356,14 @@ public:
 
 	}
 
-	sf::FloatRect retornaHitBoxPlayer() {
+	sf::FloatRect retornaHitBoxPlayer() { // retorna a hitbox do player para usar na funcao
 		sf::FloatRect hitboxPlayer = player.getGlobalBounds();
 		return hitboxPlayer;
 	}
-	//void testaHitboxSino(Sino *sino) {
-	//if (player.getGlobalBounds().intersects(sino->retornaHitBoxSino())) {
-
-	//}
-	//}
-
-	void encostaMacaco(sf::FloatRect HitBoxMacaco, points::Pontuacao *vidas){
-		if(player.getGlobalBounds().intersects(HitBoxMacaco)){
+	/*Funcao que verifica se o player encostou no macaco.
+	 * Caso encoste ele perde uma vida*/
+	void encostaMacaco(sf::FloatRect HitBoxMacaco, points::Pontuacao *vidas) {
+		if (player.getGlobalBounds().intersects(HitBoxMacaco)) {
 			vidas->perdeVida();
 			pos.x = 125;
 			pos.y = 468;
@@ -344,6 +371,10 @@ public:
 
 		}
 
+	}
+
+	float getPosY(){
+		return pos.y;
 	}
 };
 }
