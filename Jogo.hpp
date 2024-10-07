@@ -63,9 +63,9 @@ private:
 
 	void atualizarJogo(float seconds) {
 		monkey.moveMacaco(seconds);
+		jogador.moveEscada(seconds, escadas);
 		jogador.movePlayer(seconds);
 		miniKangaroo.movePlayer2(seconds);
-		jogador.moveEscada(seconds, escadas);
 		monkey.pegaCanguru(jogador.retornaAndar(), seconds);
 		bell.tocouSino(jogador.retornaHitBoxPlayer(), frutas, seconds);
 		monkey.atualizaCoco(seconds);

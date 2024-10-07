@@ -91,7 +91,7 @@ public:
 				26) };
 		upPlayer = { sf::IntRect(132, 0, 26, 26), sf::IntRect(107, 0, 25, 26) };
 		lowerPlayer =
-				{ sf::IntRect(55, 0, 25, 26), sf::IntRect(80, 0, 26, 26) };
+				{ sf::IntRect(55, 0, 25, 26), sf::IntRect(80, 10, 26, 16) };
 		stairsPlayer = { sf::IntRect(162, 27, 18, 26), sf::IntRect(181, 27, 18,
 				26) };
 
@@ -246,12 +246,22 @@ public:
 			std::vector<sf::IntRect> right) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+
+
+
+
 			if (pulo == false) {
-				player.setTextureRect(lower[0]);
+				if(naopodePular){
+					player.setTextureRect(lower[0]);
+				}else{
+				player.setTextureRect(lower[1]);
+				player.setPosition(pos.x,pos.y+20);
+				}
 				//player.setScale(sf::Vector2f(2, 1));
 				//std::cout<<"baixado";
 				abaixado = true;
 				verificaAbaixado = true;
+
 			}
 		} else {
 			if (verificaAbaixado == true) {
@@ -263,6 +273,7 @@ public:
 			//player.setScale(sf::Vector2f(2, 2));
 			abaixado = false;
 		}
+
 	}
 	void subirEscada(float tempo, int alturaEscada,
 			std::vector<sf::IntRect> stairsPlayer) {
@@ -288,6 +299,7 @@ public:
 			int alturaEscada3, Escada vetorEscadas[],
 			std::vector<sf::IntRect> stairsPlayer) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			if(abaixado==false){
 			tempoAnimacao += tempo;
 			if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
 				player.setTextureRect(stairsPlayer[0]);
@@ -309,6 +321,7 @@ public:
 				subindoEscada = true;
 				player.setPosition(pos);
 
+			}
 			}
 		}
 	}

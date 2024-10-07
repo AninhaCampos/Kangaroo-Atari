@@ -186,7 +186,7 @@ public:
 
 		 srand (time(NULL));
 		 int posicao = (rand() % 3);
-
+		 posicao=2;
 		 switch (posicao){
 		 case 0:
 			 posCoco.y = pos.y-2.5;
