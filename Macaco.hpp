@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <ctime>
 
+namespace primata{
+
 class Macaco {
 private:
 	sf::RectangleShape coco;
@@ -65,6 +67,7 @@ public:
 		monkey.setOrigin(6.5, 17);
 		monkey.setScale(sf::Vector2f(2.0f, 2.0f));
 		monkey.setRotation(anguloDescendo);
+		std::cout<<"terminou o construto";
 	}
 	void setAnimation() {
 		downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(14, 0, 14, 21) };
@@ -204,7 +207,7 @@ public:
 
 		srand(time(NULL));
 		int posicao = (rand() % 3);
-		posicao = 2;
+
 		switch (posicao) {
 		case 0:
 			posCoco.y = pos.y - 2.5;
@@ -229,12 +232,20 @@ public:
 	}
 
 	void atualizaCoco(float tempo) {
+
 		if (CocoJogado) {
 			posCoco.x -= tempo * 60;
 			coco.setPosition(posCoco);
 
 		}
 
+	}
+
+	void someCoco(sf::FloatRect HitBoxKangaroo) {
+			if(coco.getGlobalBounds().intersects(HitBoxKangaroo)){
+				posCoco.y=1500;
+				coco.setPosition(posCoco);
+			}
 	}
 
 	void voltaMacaco() {
@@ -256,6 +267,19 @@ public:
 		return coco.getGlobalBounds();
 	}
 
+	void morreMacaco(sf::FloatRect HitBoxKangaroo){
+		if(monkey.getGlobalBounds().intersects(HitBoxKangaroo)){
+			pos.x=-20;
+			pos.y=-20;
+			monkey.setPosition(-20,-20);
+		}
+	}
+
+	sf::Vector2f retornaPosMacaco(){
+
+	        return pos;
+	    }
 };
+}
 
 #endif /* MACACO_HPP_ */

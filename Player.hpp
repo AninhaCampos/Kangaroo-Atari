@@ -13,6 +13,7 @@
 #include "Pontuacao.hpp"
 #include "Sino.hpp"
 #include "MiniKangaroo.hpp"
+#include "Macaco.hpp"
 
 /*namespaces para facilitar o uso de
  * funcoes/variaveis de diferentes classes
@@ -34,12 +35,15 @@ private:
 	float tempoPulo;
 	float delayPulo;
 	float tempoAnimacao;
+	float tempoSoco;
 
 	bool pulo;
 	bool abaixado;
 	bool subindoEscada;
 	bool verificaAbaixado;
 	bool naopodePular;
+	bool socando;
+
 
 
 	sf::Vector2f pos;
@@ -71,7 +75,8 @@ public:
 		subindoEscada = false;
 		verificaAbaixado = false;
 		naopodePular = false;
-
+		socando=false;
+		tempoSoco = 0;
 
 	}
 	void loadTexturePlayer() {
@@ -375,12 +380,14 @@ public:
 	}
 	/*Funcao que verifica se o player encostou no macaco.
 	 * Caso encoste ele perde uma vida*/
-	void encostaMacaco(sf::FloatRect HitBoxMacaco, sf::FloatRect HitBoxCoco, points::Pontuacao *vidas) {
-		if (player.getGlobalBounds().intersects(HitBoxMacaco) || player.getGlobalBounds().intersects(HitBoxCoco) ) {
+	void encostaMacaco(primata::Macaco *monkey, points::Pontuacao *vidas) {
+		if ((player.getGlobalBounds().intersects(monkey->retornaHitBoxMacaco()) && socando==false) || player.getGlobalBounds().intersects(monkey->retornaHitBoxCoco()) ) {
 			vidas->perdeVida();
 			pos.x = 125;
 			pos.y = 468;
+			monkey->someCoco(player.getGlobalBounds());
 			player.setPosition(pos);
+
 
 		}
 
@@ -388,6 +395,23 @@ public:
 
 	float getPosY(){
 		return pos.y;
+	}
+
+	void socoKangaroo(float tempo){
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if (subindoEscada==false){
+			socando=true;
+			tempoSoco=0;
+			std::cout<<"socando";
+		}
+		}
+
+		tempoSoco += tempo;
+		if(tempoSoco>0.5){
+			socando=false;
+		}
+
+
 	}
 };
 }

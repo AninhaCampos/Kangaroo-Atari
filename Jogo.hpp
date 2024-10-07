@@ -24,6 +24,7 @@ using namespace std;
 using namespace berry;
 using namespace p1;
 using namespace bell;
+using namespace primata;
 /*Classe principal do jogo que cria todos os objetos,
  *  inicializa eles e chama todas as funcoes*/
 class Jogo {
@@ -43,9 +44,12 @@ private:
 	MiniKangaroo miniKangaroo;
 	Mapa mapa;
 	Sino bell;
-	Macaco monkey;
 	Fruta frutas[3];
 	Escada escadas[3];
+	float tempoSpawnMacaco;
+	vector<Macaco> monkey;
+
+
 
 	//sons
 	sf::Music backgroundMusic;
@@ -62,13 +66,39 @@ private:
 	}
 
 	void atualizarJogo(float seconds) {
-		monkey.moveMacaco(seconds);
+
+		tempoSpawnMacaco += seconds;
+		        if(tempoSpawnMacaco >= 5){
+		            Macaco newMacaco;
+		            monkey.push_back(newMacaco);
+		            tempoSpawnMacaco = 0;
+		        }
+		        for(unsigned int i = 0 ; i < monkey.size();){
+		            monkey[i].moveMacaco(seconds);
+		            monkey[i].pegaCanguru(jogador.retornaAndar(), seconds);
+		            monkey[i].atualizaCoco(seconds);
+		            jogador.encostaMacaco(&monkey[i], &vidas);
+		            monkey[i].morreMacaco(jogador.retornaHitBoxPlayer());
+
+		            sf::Vector2f posMacaco = monkey[i].retornaPosMacaco();
+
+		            if(posMacaco.x >= 1000){
+		                monkey.erase(monkey.begin() + i); //remove apenas o macaco que passou da tela na pos x
+		                std::cout << "macaco saiu da tela e foi excluido !";
+		            }else{
+		                i++; //avanca para o prox macaco apenas se nenhum for removido
+		            }
+		        }
+
+
 		jogador.moveEscada(seconds, escadas);
 		jogador.movePlayer(seconds);
 		miniKangaroo.movePlayer2(seconds);
-		monkey.pegaCanguru(jogador.retornaAndar(), seconds);
 		bell.tocouSino(jogador.retornaHitBoxPlayer(), frutas, seconds);
-		monkey.atualizaCoco(seconds);
+		jogador.socoKangaroo(seconds);
+
+
+
 
 		for (int i = 0; i < 3; i++) {
 			jogador.pegaFruta(&frutas[i], &pontos);
@@ -77,24 +107,28 @@ private:
 	}
 	/* Funcao para chamar todas as funcoes de print na janela e atualziar o display*/
 	void renderizarObjetos() {
-		window.clear(sf::Color::Black); //limpa tela
-		mapa.printMapa(&window);
+	        window.clear(sf::Color::Black); //limpa tela
+	        mapa.printMapa(&window);
 
-		for (int i = 0; i < 3; i++) {
-			frutas[i].printFruta(&window);
-		}
-		jogador.printPlayer(&window);
-		miniKangaroo.printPlayer2(&window);
-		monkey.printMacaco(&window);
-		palavra1.printText(&window);
-		palavra2.printText(&window);
-		pontos.printText(&window);
-		vidas.printText(&window);
-		bell.printSino(&window);
-		monkey.printCoco(&window);
+	        for (int i = 0; i < 3; i++) {
+	            frutas[i].printFruta(&window);
+	        }
+	        for(unsigned int i = 0; i<monkey.size();i++){
 
-		window.display(); //atualiza tela
-	}
+	            monkey[i].printMacaco(&window);
+	            monkey[i].printCoco(&window);
+	        }
+	        jogador.printPlayer(&window);
+	        miniKangaroo.printPlayer2(&window);
+	        palavra1.printText(&window);
+	        palavra2.printText(&window);
+	        pontos.printText(&window);
+	        vidas.printText(&window);
+	        bell.printSino(&window);
+
+
+	        window.display(); //atualiza tela
+	    }
 
 	void carregaSons() { //carrega som de fundo e som de vitoria
 		if (!backgroundMusic.openFromFile("assets/Sounds/BackgroundSong.wav"))
@@ -147,12 +181,14 @@ public:
 					Fruta(sf::Vector2f(550, 120)) }, escadas { Escada(850, 469),
 					Escada(160, 336), Escada(850, 203) }
 
+
 	{
 		paraJogo = false;
 		delayAtualizar = 0.0;
 		carregaSons();
 		pontos.setPontosZero();
 		vidas.setVidaMax();
+		tempoSpawnMacaco=0;
 
 	}
 	//loop principal do jogo
@@ -167,7 +203,7 @@ public:
 			if (paraJogo == false) {
 				atualizarJogo(seconds);
 				renderizarObjetos();
-				jogador.encostaMacaco(monkey.retornaHitBoxMacaco(),monkey.retornaHitBoxCoco(), &vidas);
+
 			}
 
 		}
