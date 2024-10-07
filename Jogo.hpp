@@ -68,6 +68,7 @@ private:
 		jogador.moveEscada(seconds, escadas);
 		monkey.pegaCanguru(jogador.retornaAndar(), seconds);
 		bell.tocouSino(jogador.retornaHitBoxPlayer(), frutas, seconds);
+		monkey.atualizaCoco(seconds);
 
 		for (int i = 0; i < 3; i++) {
 			jogador.pegaFruta(&frutas[i], &pontos);
@@ -90,6 +91,7 @@ private:
 		pontos.printText(&window);
 		vidas.printText(&window);
 		bell.printSino(&window);
+		monkey.printCoco(&window);
 
 		window.display(); //atualiza tela
 	}
@@ -165,7 +167,7 @@ public:
 			if (paraJogo == false) {
 				atualizarJogo(seconds);
 				renderizarObjetos();
-				jogador.encostaMacaco(monkey.retornaHitBoxMacaco(), &vidas);
+				jogador.encostaMacaco(monkey.retornaHitBoxMacaco(),monkey.retornaHitBoxCoco(), &vidas);
 			}
 
 		}

@@ -362,8 +362,8 @@ public:
 	}
 	/*Funcao que verifica se o player encostou no macaco.
 	 * Caso encoste ele perde uma vida*/
-	void encostaMacaco(sf::FloatRect HitBoxMacaco, points::Pontuacao *vidas) {
-		if (player.getGlobalBounds().intersects(HitBoxMacaco)) {
+	void encostaMacaco(sf::FloatRect HitBoxMacaco, sf::FloatRect HitBoxCoco, points::Pontuacao *vidas) {
+		if (player.getGlobalBounds().intersects(HitBoxMacaco) || player.getGlobalBounds().intersects(HitBoxCoco) ) {
 			vidas->perdeVida();
 			pos.x = 125;
 			pos.y = 468;
