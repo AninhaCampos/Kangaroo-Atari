@@ -11,7 +11,6 @@
 #include <cstdlib>
 #include <ctime>
 
-
 class Macaco {
 private:
 	sf::RectangleShape coco;
@@ -26,6 +25,8 @@ private:
 	sf::Texture monkeyTexture;
 	std::vector<sf::IntRect> downMacaco;
 	std::vector<sf::IntRect> leftMacaco;
+	std::vector<sf::IntRect> rightMacaco;
+	std::vector<sf::IntRect> jogandoCoco;
 	bool paradeAndar;
 	bool CocoEscolhido;
 	bool CocoJogado;
@@ -35,8 +36,8 @@ public:
 
 	Macaco() {
 		coco.setSize(sf::Vector2f(5, 5));
-		coco.setFillColor(sf::Color::Black);
-		coco.setOrigin(5 / 2, 5/2);
+		coco.setFillColor(sf::Color(156, 90, 60));
+		coco.setOrigin(5 / 2, 5 / 2);
 		loadTextureMacaco();
 		setAnimation();
 		setSprite(downMacaco);
@@ -69,6 +70,9 @@ public:
 		downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(14, 0, 14, 21) };
 		leftMacaco =
 				{ sf::IntRect(45, 15, 17, 17), sf::IntRect(64, 15, 17, 17) };
+		rightMacaco =
+				{ sf::IntRect(0, 22, 17, 18), sf::IntRect(18, 22, 17, 18) };
+		jogandoCoco = { sf::IntRect(0, 60, 18, 14), sf::IntRect(0, 41, 20, 17) };
 	}
 	void printMacaco(sf::RenderWindow *window) {
 		window->draw(monkey);
@@ -93,61 +97,41 @@ public:
 		monkey.setPosition(pos);
 
 	}
-	void JogarFezes() {
-		srand(time(NULL));
-
-		/*int posicaoPoop = rand() % 3;
-
-		 Fezes bosta;
-
-		 switch (posicaoPoop){
-		 case 0:
-		 Fezes bosta(posX-25,posY+25);
-		 break;
-		 case 1:
-		 Fezes bosta(posX-25,posY);
-		 break;
-		 case 2:
-		 Fezes bosta(posX-25,posY-25);
-		 break;
-		 }*/
-
-	}
 
 	void pegaCanguru(int andar, float tempo) {
 
 		switch (andar) {
 		case 1:
 			if (pos.y > 469 && pos.y < 470) {
-				if(paradeAndar==false){
-				animacaoAndandoEsquerda(tempo);
-				velX = -50;
-				velY = 0;
+				if (paradeAndar == false && CocoJogado == false) {
+					animacaoAndandoEsquerda(tempo);
+					velX = -50;
+					velY = 0;
 				}
-				testaLimiteX();
+				testaLimiteX(tempo);
 			}
 			break;
 
 		case 2:
 			if (pos.y > 336 && pos.y < 337) {
-				if(paradeAndar==false){
-				animacaoAndandoEsquerda(tempo);
-				velX = -50;
-				velY = 0;
+				if (paradeAndar == false && CocoJogado == false) {
+					animacaoAndandoEsquerda(tempo);
+					velX = -50;
+					velY = 0;
 				}
-				testaLimiteX();
+				testaLimiteX(tempo);
 			}
 
 			break;
 
 		case 3:
 			if (pos.y > 203 && pos.y < 204) {
-				if(paradeAndar==false){
-				animacaoAndandoEsquerda(tempo);
-				velX = -50;
-				velY = 0;
+				if (paradeAndar == false && CocoJogado == false) {
+					animacaoAndandoEsquerda(tempo);
+					velX = -50;
+					velY = 0;
 				}
-				testaLimiteX();
+				testaLimiteX(tempo);
 			}
 			break;
 		}
@@ -162,85 +146,115 @@ public:
 			tempoAnimacao = 0;
 		}
 	}
-	sf::FloatRect retornaHitBoxMacaco(){
+	void animacaoAndandoDireita(float tempo) {
+		tempoAnimacao += tempo;
+		monkey.setRotation(anguloAndando);
+		if (tempoAnimacao > 0.1 && tempoAnimacao < 0.3) {
+			monkey.setTextureRect(rightMacaco[1]);
+		} else if (tempoAnimacao > 0.4) {
+			monkey.setTextureRect(rightMacaco[0]);
+			tempoAnimacao = 0;
+		}
+	}
+	void animacaoJogandoCoco(float tempo) {
+		tempoAnimacao += tempo;
+		monkey.setRotation(anguloAndando);
+		if (tempoAnimacao > 0.1 && tempoAnimacao < 0.4) {
+			monkey.setTextureRect(jogandoCoco[1]);
+		} else if (tempoAnimacao > 0.5  ) {
+			monkey.setTextureRect(jogandoCoco[0]);
+
+		}
+		if (tempoAnimacao >= 1.0) {
+			delayCoco = 0;
+			//tempoAnimacao = 0;
+		}
+	}
+
+	sf::FloatRect retornaHitBoxMacaco() {
 		return monkey.getGlobalBounds();
 
 	}
 
-	void testaLimiteX(){
-		if( pos.x <= 750){
-			velX=0;
-			paradeAndar=true;
-			if(CocoEscolhido==false){
+	void testaLimiteX(float tempo) {
+		if (pos.x <= 750 && CocoJogado == false) {
+			velX = 0;
+			paradeAndar = true;
+			animacaoJogandoCoco(tempo);
+			if (CocoEscolhido == false) {
 
-			randomizaCoco();
-			CocoEscolhido=true;
-			CocoJogado=true;
+				randomizaCoco();
+				CocoEscolhido = true;
+				CocoJogado = true;
+				delayCoco = 1.5;
 			}
-			voltaMacaco();
+			//voltaMacaco();
+		} else if (CocoJogado == true) {
+			if (delayCoco > 0) {
+				delayCoco -= tempo;
+			} else {
+				voltaMacaco();
+				animacaoAndandoDireita(tempo);
+			}
 		}
 
 	}
 
-	void randomizaCoco(){
+	void randomizaCoco() {
 
-		 srand (time(NULL));
-		 int posicao = (rand() % 3);
-		 posicao=2;
-		 switch (posicao){
-		 case 0:
-			 posCoco.y = pos.y-2.5;
-			 posCoco.x = pos.x;
-			 coco.setPosition(posCoco);
+		srand(time(NULL));
+		int posicao = (rand() % 3);
+		posicao = 2;
+		switch (posicao) {
+		case 0:
+			posCoco.y = pos.y - 2.5;
+			posCoco.x = pos.x;
+			coco.setPosition(posCoco);
 
-		 break ;
+			break;
 
-		 case 1:
-			 posCoco.y = pos.y-25;
-			 posCoco.x = pos.x;
-			 coco.setPosition(posCoco);
-		 break ;
+		case 1:
+			posCoco.y = pos.y - 25;
+			posCoco.x = pos.x;
+			coco.setPosition(posCoco);
+			break;
 
-		 case 2:
-			 posCoco.y = pos.y-55;
-			 posCoco.x = pos.x;
-			 coco.setPosition(posCoco);
-		 break ;
-		 }
-
-
+		case 2:
+			posCoco.y = pos.y - 55;
+			posCoco.x = pos.x;
+			coco.setPosition(posCoco);
+			break;
+		}
 
 	}
 
-	void atualizaCoco(float tempo ){
-		if(CocoJogado){
-		posCoco.x -= tempo*60;
-		coco.setPosition(posCoco);
+	void atualizaCoco(float tempo) {
+		if (CocoJogado) {
+			posCoco.x -= tempo * 60;
+			coco.setPosition(posCoco);
 
 		}
 
 	}
 
-	void voltaMacaco(){
+	void voltaMacaco() {
 		velX = 50;
-		 coco.setPosition(posCoco);
-		 if(pos.x>900){
-			 velX=0;
-			 velY=60;
+		coco.setPosition(posCoco);
+		/*if (pos.x > 900) {
+			velX = 0;
+			velY = 60;
 
-		 }
+		}*/
 
 	}
 
-	void printCoco(sf::RenderWindow *window){
+	void printCoco(sf::RenderWindow *window) {
 		window->draw(coco);
 	}
 
-	sf::FloatRect retornaHitBoxCoco(){
+	sf::FloatRect retornaHitBoxCoco() {
 		return coco.getGlobalBounds();
 	}
-
-
 
 };
 
