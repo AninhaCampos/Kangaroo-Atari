@@ -36,6 +36,7 @@ private:
 	float delayPulo;
 	float tempoAnimacao;
 	float tempoSoco;
+	float delaySoco;
 
 	bool pulo;
 	bool abaixado;
@@ -77,6 +78,7 @@ public:
 		naopodePular = false;
 		socando=false;
 		tempoSoco = 0;
+		delaySoco = 0;
 
 	}
 	void loadTexturePlayer() {
@@ -168,7 +170,7 @@ public:
 	//Funcoes chamadas dentro da movePlayer
 	void andarDireita(float tempo, std::vector<sf::IntRect> right) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			if (pulo == false) {
+			if (pulo == false && socando==false) {
 				tempoAnimacao += tempo;
 				if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
 					player.setTextureRect(right[0]);
@@ -189,7 +191,7 @@ public:
 	void andarEsquerda(float tempo, std::vector<sf::IntRect> left) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			if (pulo == false) {
+			if (pulo == false && socando==false) {
 				tempoAnimacao += tempo;
 				if (tempoAnimacao > 0.1 && tempoAnimacao < 0.2) {
 					player.setTextureRect(left[0]);
@@ -399,13 +401,17 @@ public:
 
 	void socoKangaroo(float tempo){
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if(delaySoco>0.3){
 		if (subindoEscada==false){
 			socando=true;
 			tempoSoco=0;
 			std::cout<<"socando";
-		}
-		}
+			delaySoco=0;
 
+		}
+		}
+		}
+		delaySoco += tempo;
 		tempoSoco += tempo;
 		if(tempoSoco>0.5){
 			socando=false;
