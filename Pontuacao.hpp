@@ -68,6 +68,11 @@ public:
 		vidas--;
 		texto.setString(std::to_string(vidas));
 	}
+
+	int getVidas(){
+	        return vidas;
+	    }
+
 };
 }
 #endif /* PONTUACAO_HPP_ */

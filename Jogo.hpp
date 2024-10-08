@@ -32,6 +32,8 @@ private:
 	//janela
 	sf::RenderWindow window;
 	sf::Clock frameClock;
+	sf::Texture monkeyTexture;
+
 	bool paraJogo;
 	float delayAtualizar;
 
@@ -48,7 +50,8 @@ private:
 	Escada escadas[3];
 	float tempoSpawnMacaco;
 	vector<Macaco> monkey;
-
+	sf::SoundBuffer bufferDerrota;
+	sf::Sound somDerrota;
 
 
 	//sons
@@ -64,12 +67,16 @@ private:
 			}
 		}
 	}
+	void loadTextureMacaco() {
+			if (!monkeyTexture.loadFromFile("assets/macaco.png"))
+				std::cout << "Erro ao carregar a textura do macaco" << std::endl;
+		}
 
 	void atualizarJogo(float seconds) {
 
 		tempoSpawnMacaco += seconds;
-		        if(tempoSpawnMacaco >= 5){
-		            Macaco newMacaco;
+		        if(tempoSpawnMacaco >= 1){
+		            Macaco newMacaco(&monkeyTexture);
 		            monkey.push_back(newMacaco);
 		            tempoSpawnMacaco = 0;
 		        }
@@ -78,7 +85,9 @@ private:
 		            monkey[i].pegaCanguru(jogador.retornaAndar(), seconds);
 		            monkey[i].atualizaCoco(seconds);
 		            jogador.encostaMacaco(&monkey[i], &vidas);
-		            monkey[i].morreMacaco(jogador.retornaHitBoxPlayer());
+		           if( monkey[i].morreMacaco(jogador.retornaHitBoxPlayer())){
+		        	   monkey.erase(monkey.begin()+i);
+		           }
 
 		            sf::Vector2f posMacaco = monkey[i].retornaPosMacaco();
 
@@ -143,6 +152,12 @@ private:
 
 		somVitoria.setBuffer(bufferVitoria);
 		somVitoria.setVolume(80.f);
+		if (!bufferDerrota.loadFromFile("assets/Sounds/SomDefeat.wav"))
+		                    std::cout << "Erro ao carregar o som da derrota" << std::endl;
+
+		                somDerrota.setBuffer(bufferDerrota);
+		                somDerrota.setVolume(100.f);
+
 
 	}
 
@@ -170,6 +185,30 @@ private:
 
 	}
 
+	void Perdeu() {
+	            if (vidas.getVidas() <= 0) {
+
+	                backgroundMusic.pause();
+	                sf::Texture textureDefeat;
+	                textureDefeat.loadFromFile("assets/GameDefeat.png");
+	                sf::Sprite gameDefeat;
+	                gameDefeat.setTexture(textureDefeat);
+	                gameDefeat.setOrigin(0, 0);
+	                gameDefeat.setPosition(0, 0);
+	                //gameWin.setScale(2, 2);
+
+
+	                window.clear();
+	                window.draw(gameDefeat);
+	                window.display();
+
+	                somDerrota.play();
+	                paraJogo = true;
+
+	            }
+
+	        }
+
 public:
 	Jogo() :
 			window(sf::VideoMode(1000, 550), "Kangaroo Atari",
@@ -189,6 +228,7 @@ public:
 		pontos.setPontosZero();
 		vidas.setVidaMax();
 		tempoSpawnMacaco=0;
+		loadTextureMacaco();
 
 	}
 	//loop principal do jogo
@@ -198,6 +238,7 @@ public:
 			float seconds = frameTime.asSeconds();
 
 			Venceu();
+			Perdeu();
 			processarEventos();
 
 			if (paraJogo == false) {

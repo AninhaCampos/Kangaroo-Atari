@@ -24,7 +24,7 @@ private:
 	float anguloDescendo;
 	float anguloAndando;
 	float tempoAnimacao;
-	sf::Texture monkeyTexture;
+	//sf::Texture monkeyTexture;
 	std::vector<sf::IntRect> downMacaco;
 	std::vector<sf::IntRect> leftMacaco;
 	std::vector<sf::IntRect> rightMacaco;
@@ -36,13 +36,13 @@ private:
 
 public:
 
-	Macaco() {
+	Macaco(sf::Texture *monkeyTexture) {
 		coco.setSize(sf::Vector2f(5, 5));
 		coco.setFillColor(sf::Color(156, 90, 60));
 		coco.setOrigin(5 / 2, 5 / 2);
-		loadTextureMacaco();
+		//loadTextureMacaco();
 		setAnimation();
-		setSprite(downMacaco);
+		setSprite(downMacaco,monkeyTexture);
 		pos.x = 955;
 		pos.y = 7;
 		posCoco.x = -1;
@@ -56,18 +56,15 @@ public:
 		delayCoco = 0;
 
 	}
-	void loadTextureMacaco() {
-		if (!monkeyTexture.loadFromFile("assets/macaco.png"))
-			std::cout << "Erro ao carregar a textura do macaco" << std::endl;
-	}
-	void setSprite(std::vector<sf::IntRect> downMacaco) {
-		monkey.setTexture(monkeyTexture);
+
+	void setSprite(std::vector<sf::IntRect> downMacaco,sf::Texture *monkeyTexture ) {
+		monkey.setTexture(*monkeyTexture);
 		monkey.setTextureRect(downMacaco[0]);
 		monkey.setPosition(pos);
 		monkey.setOrigin(6.5, 17);
 		monkey.setScale(sf::Vector2f(2.0f, 2.0f));
 		monkey.setRotation(anguloDescendo);
-		std::cout<<"terminou o construto";
+
 	}
 	void setAnimation() {
 		downMacaco = { sf::IntRect(0, 0, 13, 21), sf::IntRect(14, 0, 14, 21) };
@@ -267,11 +264,12 @@ public:
 		return coco.getGlobalBounds();
 	}
 
-	void morreMacaco(sf::FloatRect HitBoxKangaroo){
+	bool morreMacaco(sf::FloatRect HitBoxKangaroo){
 		if(monkey.getGlobalBounds().intersects(HitBoxKangaroo)){
-			pos.x=-20;
-			pos.y=-20;
-			monkey.setPosition(-20,-20);
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 
