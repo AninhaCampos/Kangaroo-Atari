@@ -55,6 +55,7 @@ private:
 	std::vector<sf::IntRect> upPlayer;
 	std::vector<sf::IntRect> lowerPlayer;
 	std::vector<sf::IntRect> stairsPlayer;
+	sf::IntRect punchPlayer;
 	sf::SoundBuffer bufferJump;
 	sf::Sound somJump;
 
@@ -101,6 +102,7 @@ public:
 				{ sf::IntRect(55, 0, 25, 26), sf::IntRect(80, 10, 26, 16) };
 		stairsPlayer = { sf::IntRect(162, 27, 18, 26), sf::IntRect(181, 27, 18,
 				26) };
+		punchPlayer = sf::IntRect (160,0,27,26);
 
 	}
 	//desenha player
@@ -400,6 +402,7 @@ public:
 	}
 
 	void socoKangaroo(float tempo){
+		bool socou;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		if(delaySoco>0.3){
 		if (subindoEscada==false){
@@ -407,7 +410,8 @@ public:
 			tempoSoco=0;
 			std::cout<<"socando";
 			delaySoco=0;
-
+			player.setTextureRect(punchPlayer);
+			socou = true;
 		}
 		}
 		}
@@ -415,6 +419,10 @@ public:
 		tempoSoco += tempo;
 		if(tempoSoco>0.5){
 			socando=false;
+			if(socou){
+			player.setTextureRect(rightPlayer[0]);
+			socou = false;
+			}
 		}
 
 

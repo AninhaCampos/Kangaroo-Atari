@@ -75,7 +75,7 @@ private:
 	void atualizarJogo(float seconds) {
 
 		tempoSpawnMacaco += seconds;
-		        if(tempoSpawnMacaco >= 1){
+		        if(tempoSpawnMacaco >= 7){
 		            Macaco newMacaco(&monkeyTexture);
 		            monkey.push_back(newMacaco);
 		            tempoSpawnMacaco = 0;
