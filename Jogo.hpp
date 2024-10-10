@@ -18,6 +18,7 @@
 #include "MiniKangaroo.hpp"
 #include "Pontuacao.hpp"
 #include "Sino.hpp"
+#include "Pedra.hpp"
 
 using namespace stairs;
 using namespace std;
@@ -43,6 +44,7 @@ private:
 	Pontuacao pontos;
 	Pontuacao vidas;
 	Player jogador;
+	Pedra pedra;
 	MiniKangaroo miniKangaroo;
 	Mapa mapa;
 	Sino bell;
@@ -84,7 +86,7 @@ private:
 		            monkey[i].moveMacaco(seconds);
 		            monkey[i].pegaCanguru(jogador.retornaAndar(), seconds);
 		            monkey[i].atualizaCoco(seconds);
-		            jogador.encostaMacaco(&monkey[i], &vidas);
+		            jogador.encostaMacaco(&monkey[i], &vidas, pedra.retornaHitBox());
 		           if( monkey[i].morreMacaco(jogador.retornaHitBoxPlayer())){
 		        	   monkey.erase(monkey.begin()+i);
 		           }
@@ -105,6 +107,8 @@ private:
 		miniKangaroo.movePlayer2(seconds);
 		bell.tocouSino(jogador.retornaHitBoxPlayer(), frutas, seconds);
 		jogador.socoKangaroo(seconds);
+		pedra.movePedra(seconds);
+		pedra.caiPlayer(jogador.getPosX());
 
 
 
@@ -134,6 +138,7 @@ private:
 	        pontos.printText(&window);
 	        vidas.printText(&window);
 	        bell.printSino(&window);
+	        pedra.printPedra(&window);
 
 
 	        window.display(); //atualiza tela

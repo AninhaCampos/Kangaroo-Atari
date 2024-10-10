@@ -384,8 +384,8 @@ public:
 	}
 	/*Funcao que verifica se o player encostou no macaco.
 	 * Caso encoste ele perde uma vida*/
-	void encostaMacaco(primata::Macaco *monkey, points::Pontuacao *vidas) {
-		if ((player.getGlobalBounds().intersects(monkey->retornaHitBoxMacaco()) && socando==false) || player.getGlobalBounds().intersects(monkey->retornaHitBoxCoco()) ) {
+	void encostaMacaco(primata::Macaco *monkey, points::Pontuacao *vidas , sf::FloatRect HitBoxPedra) {
+		if ((player.getGlobalBounds().intersects(monkey->retornaHitBoxMacaco()) && socando==false) || player.getGlobalBounds().intersects(monkey->retornaHitBoxCoco()) || player.getGlobalBounds().intersects(HitBoxPedra) ) {
 			vidas->perdeVida();
 			pos.x = 125;
 			pos.y = 468;
@@ -400,6 +400,10 @@ public:
 	float getPosY(){
 		return pos.y;
 	}
+
+	float getPosX(){
+			return pos.x;
+		}
 
 	void socoKangaroo(float tempo){
 		bool socou;
