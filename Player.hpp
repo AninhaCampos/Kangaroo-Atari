@@ -391,6 +391,7 @@ public:
 			pos.y = 468;
 			monkey->someCoco(player.getGlobalBounds());
 			player.setPosition(pos);
+			pulo=false;
 
 
 		}

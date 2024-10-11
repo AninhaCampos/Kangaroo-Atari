@@ -23,6 +23,7 @@ public:
 	void printPedra(sf::RenderWindow *window) {
 
 		window->draw(pedra);
+
 	}
 
 	void movePedra(float tempo){
@@ -35,11 +36,12 @@ public:
 	void caiPlayer(float posxPlayer){
 		if(pos.x>=posxPlayer){
 			velX=0;
-			velY=120;
+			velY=180;
 
-			testaPedra();
+
 
 		}
+		testaPedra();
 	}
 
 	sf::FloatRect retornaHitBox(){
@@ -56,7 +58,7 @@ public:
 	}
 
 	void testaPedra(){
-		if (pos.y > 550 || pos.x>898){
+		if (pos.y >= 550 || pos.x>898){
 			resetPedra();
 		}
 	}
